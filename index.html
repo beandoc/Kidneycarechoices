@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Kidney Care Choices Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; 
+            scroll-behavior: smooth;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e9ebee 100%); /* New background gradient */
+            color: #374151; /* Default text color - text-gray-700 */
+        }
+        .section-content { 
+            animation: fadeInAnimation 0.6s ease-in-out; 
+        }
+        @keyframes fadeInAnimation { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        /* Toggle Switch Styles */
+        .toggle-checkbox:focus-visible + .toggle-label { /* Use focus-visible for better accessibility */
+            outline: 2px solid #3b82f6; /* focus ring for accessibility - blue-500 */
+            outline-offset: 2px;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3b82f6; /* bg-blue-500 */
+        }
+        .toggle-checkbox:checked + .toggle-label::after {
+            transform: translateX(calc(100% - 2px));
+        }
+        .toggle-label {
+            width: 44px; /* w-11 */
+            height: 24px; /* h-6 */
+            background-color: #D1D5DB; /* bg-gray-300 */
+            border-radius: 9999px; /* rounded-full */
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .toggle-label::after {
+            content: '';
+            position: absolute;
+            width: 20px; /* w-5 */
+            height: 20px; /* h-5 */
+            border-radius: 9999px; /* rounded-full */
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Slider Styles */
+        .slider-track {
+            height: 0.75rem; /* h-3 */
+            border-radius: 0.5rem; /* rounded-lg */
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            /* background is set inline for dynamic fill */
+        }
+
+        /* Webkit (Chrome, Safari, Edge) */
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+            background-color: #3b82f6; /* Tailwind blue-500 */
+            border-radius: 9999px; /* rounded-full */
+            cursor: pointer;
+            margin-top: -4px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: transform 0.1s ease-in-out;
+        }
+        .slider-thumb:active::-webkit-slider-thumb {
+            transform: scale(1.1);
+        }
+        .slider-thumb:focus-visible::-webkit-slider-thumb { /* Use focus-visible */
+             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4); /* Tailwind blue-500 with opacity */
+        }
+
+        /* Firefox */
+        .slider-thumb::-moz-range-thumb {
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: #3b82f6; /* Tailwind blue-500 */
+            border-radius: 9999px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: transform 0.1s ease-in-out;
+        }
+         .slider-thumb:active::-moz-range-thumb {
+            transform: scale(1.1);
+        }
+        .slider-thumb:focus-visible::-moz-range-thumb { /* Use focus-visible */
+            outline: 2px solid #3b82f6; 
+            outline-offset: 1px;
+        }
+        .slider-thumb::-moz-range-track {
+             background: transparent; 
+             border: none;
+        }
+        
+        /* Gradient Button Base */
+        .btn-gradient-primary {
+            background-image: linear-gradient(to right, #4f46e5, #6366f1); /* Indigo gradient */
+            color: white;
+        }
+        .btn-gradient-primary:hover {
+            background-image: linear-gradient(to right, #4338ca, #4f46e5); /* Darker indigo gradient */
+        }
+
+        .text-gradient-blue {
+            background: linear-gradient(to right, #4f46e5, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/"
+  }
+}
+</script>
+</head>
+<body class="text-gray-800">
+    <div id="root"></div>
+    <script type="module">
+import React, { useState, useCallback, useMemo, useContext, createContext, ReactNode } from 'react';
+import ReactDOM from 'react-dom/client';
+
+// --- START OF types.ts ---
+var Section;
+(function (Section) {
+    Section["BASICS"] = "Basics";
+    Section["UNDERSTANDING_TREATMENTS"] = "Understanding Treatment Options";
+    Section["HEALTH_ISSUES"] = "Health Issues";
+    Section["TREATMENT_COMPARISON"] = "Treatment Options";
+    Section["COMPLICATIONS"] = "Complications";
+    Section["YOUR_PREFERENCES"] = "Your Preferences";
+    Section["RESULTS"] = "Results";
+})(Section || (Section = {}));
+// --- END OF types.ts ---
+
+// --- START OF translations.ts ---
+const translations = {
+  en: {
+    appName: "My Kidney Care Choices Tool",
+    nav: {
+      basics: "Basics",
+      healthIssues: "Health Issues",
+      treatmentOptions: "Treatment Options",
+      complications: "Complications",
+      yourPreferences: "Your Preferences",
+      results: "Results",
+    },
+    buttons: {
+      letsExplore: "Let's Explore",
+      continueTo: "Continue to {{section}}",
+      seeResults: "See Your Results",
+      startOver: "Start Over",
+    },
+    labels: {
+      notImportant: "Not Important",
+      neutral: "Neutral",
+      veryImportant: "Very Important",
+      slightlyImportant: "Slightly Important",
+      important: "Important",
+      poor: "Poor",
+      average: "Average",
+      excellent: "Excellent",
+      yes: "Yes",
+      no: "No",
+      keyFactors: "Key Factors:",
+      symptomsInclude: "Symptoms include: {{symptoms}}",
+    },
+    welcome: {
+      title: "Welcome to My Kidney Care Choices Tool",
+      intro: "This interactive tool will help you understand different kidney treatment options and find the approach that best matches your lifestyle, medical needs, and personal preferences.",
+      aboutTitle: "About This Tool",
+      aboutIntro: "When facing kidney failure, understanding your treatment options is crucial for making informed decisions about your care. This tool will guide you through:",
+      aboutPoints: [
+        "Basic information about kidney failure and treatment options",
+        "Common health issues experienced with kidney failure",
+        "Detailed comparison of treatment approaches",
+        "Potential complications of different treatments",
+        "A personalized assessment based on your preferences"
+      ],
+      note: "Note: This tool provides educational information only and is not a substitute for medical advice. Always consult with your healthcare team before making treatment decisions."
+    },
+    understandingTreatments: {
+      title: "Understanding Treatment Options",
+      intro: "Learn about the primary treatment approaches for kidney failure. Each option has unique benefits and considerations.",
+      sectionTitleIntro: "Introduction", // Generic key for "Introduction"
+      sectionTitleProcess: "Process", // Generic key for "Process"
+      hemodialysis: {
+        name: "Hemodialysis",
+        introduction: "Hemodialysis is a treatment that filters waste and excess fluid from your blood using a machine with a special filter called a dialyzer (artificial kidney). This treatment is typically performed at a dialysis center.",
+        process: "During hemodialysis, blood is pumped out of your body through a surgically created access point (usually in your arm), filtered through the dialyzer, and returned to your body. Each session typically lasts 3-5 hours and is performed 3 times per week.",
+        prosTitle: "Pros",
+        consTitle: "Cons",
+        pros: [
+          "Medical staff present during treatment",
+          "No daily procedures at home",
+          "Regular social interaction with staff and other patients",
+          "No supplies stored at home",
+          "Treatment-free days",
+          "Effective removal of waste products",
+        ],
+        cons: [
+          "Fixed schedule at dialysis center",
+          "Travel to and from center required",
+          "Needle insertion with each treatment",
+          "Dietary and fluid restrictions",
+          "Potential for post-treatment fatigue",
+          "Risk of access site complications",
+        ],
+      },
+      peritonealDialysis: {
+        name: "Peritoneal Dialysis",
+        introduction: "Peritoneal dialysis (PD) uses the lining of your abdomen (peritoneum) as a natural filter to clean your blood. This treatment is performed at home, giving you more flexibility and independence in your daily routine.",
+        process: "A catheter is surgically placed in your abdomen. During treatment, a cleansing fluid (dialysate) flows through the catheter into your peritoneal cavity, where it absorbs waste and excess fluid. After a dwell time, the fluid is drained out. This can be done manually (CAPD) or using a machine while you sleep (APD).",
+        prosTitle: "Pros",
+        consTitle: "Cons",
+        pros: [
+          "Greater independence and flexibility",
+          "Can be done at home or while traveling",
+          "No needles required",
+          "More liberal diet and fluid intake",
+          "Gentler on your body (continuous)",
+          "Better preservation of residual kidney function",
+        ],
+        cons: [
+          "Requires daily treatments",
+          "Risk of peritonitis (infection)",
+          "Permanent catheter in abdomen",
+          "Storage space needed for supplies",
+          "Weight gain and body image concerns",
+          "Requires self-care or caregiver assistance",
+        ],
+      },
+      conservativeCare: {
+        name: "Conservative Care",
+        introduction: "Conservative care (also called supportive care) is a treatment approach that focuses on managing symptoms and maintaining quality of life without dialysis. This option is typically considered for those who may not benefit from or prefer not to undergo dialysis.",
+        process: "Conservative care involves medications, dietary changes, and other treatments to manage symptoms of kidney failure. The focus is on comfort, symptom control, and quality of life rather than extending life through dialysis. Regular monitoring by healthcare providers is still important.",
+        prosTitle: "Pros",
+        consTitle: "Cons",
+        pros: [
+          "No invasive procedures or surgeries",
+          "No time spent on dialysis treatments",
+          "Focus on quality of life and comfort",
+          "Can remain at home",
+          "Avoids complications of dialysis",
+          "May be appropriate for those with other serious health conditions",
+        ],
+        cons: [
+          "Progressive worsening of kidney function",
+          "Shorter life expectancy than with dialysis",
+          "Increasing symptoms as kidney function declines",
+          "May require increasing medical support",
+          "Potential for hospitalization for symptom management",
+        ],
+      }
+    },
+    healthIssues: {
+      title: "Common Health Issues with Advanced Kidney Failure",
+      intro: "People with advanced kidney failure may experience various health problems as their kidneys lose the ability to filter waste and maintain balance in the body.",
+      fluidOverload: {
+        name: "Fluid Overload",
+        description: "When kidneys can't remove excess fluid, it builds up in the body causing swelling in the legs, ankles, feet, and sometimes around the lungs. This can lead to breathing difficulties, high blood pressure, and heart problems.",
+        symptoms: "Weight gain, swollen ankles, shortness of breath, and increased blood pressure."
+      },
+      uremicSymptoms: {
+        name: "Uremic Symptoms",
+        description: "Uremia occurs when waste products build up in the blood. This can affect multiple body systems and cause a range of symptoms that impact quality of life and overall health.",
+        symptoms: "Nausea, vomiting, loss of appetite, metallic taste in mouth, itchy skin, and confusion."
+      },
+      excessiveFatigue: {
+        name: "Excessive Fatigue",
+        description: "Kidney failure often causes severe fatigue that doesn't improve with rest. This can be due to anemia, buildup of waste products, hormonal imbalances, and other factors.",
+        symptoms: "Constant tiredness, weakness, difficulty concentrating, and reduced physical capacity."
+      },
+      anemia: {
+        name: "Anemia",
+        description: "Healthy kidneys produce a hormone called erythropoietin that signals the bone marrow to make red blood cells. With kidney failure, this process is impaired, leading to anemia (low red blood cell count).",
+        symptoms: "Fatigue, weakness, pale skin, cold intolerance, dizziness, and shortness of breath."
+      },
+      highBloodPressure: {
+        name: "High Blood Pressure",
+        description: "Kidneys help regulate blood pressure. When they fail, blood pressure often rises, which can further damage the kidneys in a dangerous cycle. High blood pressure also increases the risk of heart disease and stroke.",
+        symptoms: "Often has no symptoms but may cause headaches, vision problems, and increased risk of cardiovascular complications."
+      },
+      dangerousPotassium: {
+        name: "Dangerous Potassium Levels",
+        description: "Kidneys regulate potassium balance in the body. With kidney failure, potassium can build up to dangerous levels (hyperkalemia), which can cause serious heart rhythm problems and even cardiac arrest.",
+        symptoms: "Muscle weakness, numbness, tingling, irregular heartbeat, and in severe cases, heart palpitations."
+      }
+    },
+    treatmentComparison: {
+      title: "Treatment Comparison",
+      intro: "Here's a side-by-side look at key features of In-Center Hemodialysis, Peritoneal Dialysis, and Conservative Care.",
+      feature: "Feature",
+      hd: "In-Center Hemodialysis",
+      pd: "Peritoneal Dialysis",
+      cc: "Conservative Care",
+      location: "Location",
+      locationHd: "Dialysis center",
+      locationPd: "Home",
+      locationCc: "Home with clinic visits",
+      frequency: "Frequency",
+      frequencyHd: "3 times per week",
+      frequencyPd: "Daily (4-5 exchanges or overnight)",
+      frequencyCc: "Regular clinic visits",
+      duration: "Duration",
+      durationHd: "3-5 hours per session",
+      durationPd: "30-40 minutes per exchange or 8-10 hours overnight",
+      durationCc: "Ongoing symptom management",
+      access: "Access",
+      accessHd: "Fistula or graft in arm",
+      accessPd: "Catheter in abdomen",
+      accessCc: "None required",
+      dietRestrictions: "Diet Restrictions",
+      dietHd: "More restrictive",
+      dietPd: "Less restrictive",
+      dietCc: "Moderately restrictive",
+      travelFlexibility: "Travel Flexibility",
+      travelHd: "Limited, requires advance planning",
+      travelPd: "More flexible, supplies can be shipped",
+      travelCc: "Flexible with medication management",
+      independence: "Independence",
+      independenceHd: "Dependent on center schedule",
+      independencePd: "More independent",
+      independenceCc: "Independent with support",
+      medicalSupport: "Medical Support",
+      medicalHd: "Staff present during treatment",
+      medicalPd: "Self-care with periodic clinic visits",
+      medicalCc: "Regular monitoring by healthcare team",
+      lifeExpectancy: "Life Expectancy",
+      lifeHd: "Extended with treatment",
+      lifePd: "Extended with treatment",
+      lifeCc: "Shorter than with dialysis",
+    },
+    complications: {
+      title: "Treatment Complications",
+      intro: "Each treatment option has potential complications that should be considered when making your decision.",
+      hd: {
+        name: "Hemodialysis (HD) Complications",
+        items: [
+          { title: "Dialysis-related Complications", description: "Problems with the access point are the most common reason for people on hemodialysis having to make extra visits to hospital. Common problems include infection (sepsis), blockage from clotting (thrombosis), and poor blood flow (stenosis). These problems can stop hemodialysis from working." },
+          { title: "Stenosis", description: "Stenosis (narrowing of the blood vessels) slows the flow of blood through the access point. Stenosis usually happens slowly and there are early warning signs such as taking longer for bleeding to stop after dialysis. Treatments for stenosis include: putting a tiny balloon into the vessel and then inflating it (angioplasty); using a metal expander (a stent) in the vessel." },
+          { title: "Thrombosis", description: "Blood clotting (thrombosis) may happen with hemodialysis. The blood has clotting cells called platelets. Platelets normally stick together to seal off damaged blood vessels (e.g. in wounds). They can stick to scar tissue and damaged blood vessel walls in a fistula or graft, especially around needle punctures and when the blood flow is slow. This means the fistula might stop working." },
+          { title: "Other Complications", description: "Low blood pressure during treatment, muscle cramps, itching, sleep problems, anemia, bone disease, depression and anxiety." },
+        ]
+      },
+      pd: {
+        name: "Peritoneal Dialysis (PD) Complications",
+        items: [
+          { title: "Infection", description: "Infection is the most common problem with peritoneal dialysis. Peritonitis is an infection in the abdomen (belly) which can be serious. This infection happens when infection enters the peritoneal space within the belly. Other problems include hernias, poor drainage, infection of the exit site and leaks from the catheter. These problems can stop peritoneal dialysis from working." },
+          { title: "Poor Drainage and Leaks", description: "Poor drainage can happen for more than one reason. It can happen because a substance called fibrin (a protein) blocks the PD catheter. Usually the tube can be cleared by squeezing it or by having a nurse inject medicines into it." },
+          { title: "Hernias", description: "A hernia is usually a visible lump in the abdomen. It can happen when an internal part of the body, like an organ, pushes through the wall of the space in the body where it sits. Increased pressure in the peritoneal cavity can lead to weakness of the stomach muscles and make hernias more likely to happen. Hernias often have no symptoms and are only painful when people lift heavy objects, bend over, or cough. Surgery is usually needed to fix a hernia." },
+          { title: "Other Complications", description: "Weight gain due to glucose absorption from dialysis fluid, changes in body image due to catheter and fluid in abdomen, loss of protein in dialysis fluid, peritoneal membrane changes over time, back pain." },
+        ]
+      },
+      cc: {
+        name: "Conservative Care Considerations",
+        items: [
+          { title: "Progressive Symptoms", description: "Without dialysis, kidney function will continue to decline, leading to worsening symptoms over time. These may include increasing fatigue, nausea, confusion, itching, and fluid buildup. Medications and dietary management can help control these symptoms but may not eliminate them completely." },
+          { title: "Quality of Life Considerations", description: "The focus of conservative care is maintaining quality of life rather than extending life at all costs. This approach involves careful symptom management, emotional support, and advance care planning. For some patients, especially those with multiple other health conditions, this approach may provide better overall quality of life than dialysis." },
+          { title: "Support Needs", description: "As kidney function declines, patients may require increasing support from healthcare providers, family members, and caregivers. This may include home visits from healthcare professionals, assistance with daily activities, and eventually palliative care services." },
+        ]
+      }
+    },
+    preferences: {
+      title: "Your Treatment Preferences",
+      intro: "Indicate your preferences for each factor. This will help personalize your results.",
+      independence: "Independence and Flexibility",
+      medicalSupervision: "Medical Supervision",
+      travelAbility: "Travel Ability",
+      dietFlexibility: "Diet Flexibility",
+      selfCareAbility: "Self-Care Ability",
+      physicalCondition: "Physical Condition",
+      hasHerniaOrSurgery: "Recent Abdominal Surgery or Existing Hernia(s)",
+      hasVascularAccessIssues: "Vascular Access Issues (e.g., multiple failed fistulas, poor veins)",
+    },
+    results: {
+      title: "Your Personalized Results",
+      basedOnPreferences: "Based on your preferences, {{treatmentName}} has a {{matchPercentage}}% match with your needs.",
+      hemodialysisDesc: "This option provides regular medical supervision but requires a fixed schedule at a dialysis center.",
+      peritonealDialysisDesc: "This option offers more flexibility but requires daily self-care.",
+      conservativeCareDesc: "This option may not align well with your preference for extending life through active treatment.",
+      nextStepsTitle: "Next Steps",
+      nextStepsIntro: "Remember, this tool provides general guidance. Discuss these options with your healthcare team to make the best decision for your specific situation.",
+      questionsTitle: "Questions to Ask Your Doctor",
+      questionsItems: [
+        "Which treatment is best for my medical condition?",
+        "What are the specific risks for me with each option?",
+        "How will each option impact my daily life?",
+        "What support will I need for each treatment option?",
+        "How might my treatment needs change over time?"
+      ],
+      resourcesTitle: "Additional Resources",
+      resourcesItems: [
+        "National Kidney Foundation (or local equivalent)",
+        "Local kidney support groups",
+        "Dialysis center educational materials",
+        "Kidney patient peer mentoring programs"
+      ],
+      hdKeyFactorHernia: "Often preferred with abdominal surgical history",
+      hdKeyFactorVascular: "May be challenging with poor vascular access",
+      pdKeyFactorVascular: "Often preferred with vascular access issues",
+      pdKeyFactorHernia: "May be challenging with abdominal surgical history",
+      ccKeyFactorConflict: "May be considered if other options have high risks"
+    },
+    footer: {
+      copyright: "My Kidney Care Choices Tool © {{year}}",
+      disclaimer: "This tool provides educational information only and is not a substitute for medical advice."
+    }
+  },
+  hi: {
+    appName: "मेरी किडनी देखभाल विकल्प टूल",
+    nav: {
+      basics: "मूल बातें",
+      healthIssues: "स्वास्थ्य समस्याएँ",
+      treatmentOptions: "उपचार विकल्प",
+      complications: "जटिलताएँ",
+      yourPreferences: "आपकी प्राथमिकताएँ",
+      results: "परिणाम",
+    },
+    buttons: {
+      letsExplore: "चलिए अन्वेषण करें",
+      continueTo: "{{section}} पर जारी रखें",
+      seeResults: "अपने परिणाम देखें",
+      startOver: "पुनः आरंभ करें",
+    },
+    labels: {
+        notImportant: "महत्वपूर्ण नहीं",
+        neutral: "तटस्थ",
+        veryImportant: "बहुत महत्वपूर्ण",
+        slightlyImportant: "थोड़ा महत्वपूर्ण",
+        important: "महत्वपूर्ण",
+        poor: "खराब",
+        average: "औसत",
+        excellent: "उत्कृष्ट",
+        yes: "हाँ",
+        no: "नहीं",
+        keyFactors: "मुख्य कारक:",
+        symptomsInclude: "लक्षणों में शामिल हैं: {{symptoms}}",
+    },
+    welcome: {
+      title: "मेरी किडनी देखभाल विकल्प टूल में आपका स्वागत है",
+      intro: "यह इंटरैक्टिव टूल आपको विभिन्न किडनी उपचार विकल्पों को समझने और आपकी जीवनशैली, चिकित्सा आवश्यकताओं और व्यक्तिगत प्राथमिकताओं के लिए सबसे उपयुक्त तरीका खोजने में मदद करेगा।",
+      aboutTitle: "इस टूल के बारे में",
+      aboutIntro: "किडनी फेलियर का सामना करते समय, आपकी देखभाल के बारे में सूचित निर्णय लेने के लिए आपके उपचार विकल्पों को समझना महत्वपूर्ण है। यह टूल आपका मार्गदर्शन करेगा:",
+      aboutPoints: [
+        "किडनी फेलियर और उपचार विकल्पों के बारे में बुनियादी जानकारी",
+        "किडनी फेलियर के साथ अनुभव की जाने वाली आम स्वास्थ्य समस्याएँ",
+        "उपचार के तरीकों की विस्तृत तुलना",
+        "विभिन्न उपचारों की संभावित जटिलताएँ",
+        "आपकी प्राथमिकताओं के आधार पर एक व्यक्तिगत मूल्यांकन"
+      ],
+      note: "ध्यान दें: यह टूल केवल शैक्षिक जानकारी प्रदान करता है और चिकित्सा सलाह का विकल्प नहीं है। उपचार संबंधी निर्णय लेने से पहले हमेशा अपनी स्वास्थ्य सेवा टीम से परामर्श करें।"
+    },
+    understandingTreatments: {
+      title: "उपचार विकल्पों को समझना",
+      intro: "किडनी फेलियर के लिए प्राथमिक उपचार दृष्टिकोणों के बारे में जानें। प्रत्येक विकल्प के अद्वितीय लाभ और विचार हैं।",
+      sectionTitleIntro: "परिचय",
+      sectionTitleProcess: "प्रक्रिया",
+      hemodialysis: {
+        name: "हेमोडायलिसिस",
+        introduction: "हेमोडायलिसिस एक उपचार है जो एक विशेष फिल्टर (कृत्रिम किडनी) वाली मशीन का उपयोग करके आपके रक्त से अपशिष्ट और अतिरिक्त तरल पदार्थ को फ़िल्टर करता है। यह उपचार आमतौर पर एक डायलिसिस केंद्र में किया जाता है।",
+        process: "हेमोडायलिसिस के दौरान, रक्त को शल्य चिकित्सा द्वारा बनाए गए एक्सेस पॉइंट (आमतौर पर आपकी बांह में) के माध्यम से आपके शरीर से बाहर पंप किया जाता है, डायलाइज़र के माध्यम से फ़िल्टर किया जाता है, और आपके शरीर में वापस लौटा दिया जाता है। प्रत्येक सत्र आमतौर पर 3-5 घंटे तक चलता है और प्रति सप्ताह 3 बार किया जाता है।",
+        prosTitle: "लाभ",
+        consTitle: "नुकसान",
+        pros: [
+          "उपचार के दौरान चिकित्सा कर्मचारी उपस्थित रहते हैं",
+          "घर पर कोई दैनिक प्रक्रिया नहीं",
+          "कर्मचारियों और अन्य रोगियों के साथ नियमित सामाजिक संपर्क",
+          "घर पर कोई आपूर्ति संग्रहीत नहीं",
+          "उपचार-मुक्त दिन",
+          "अपशिष्ट उत्पादों का प्रभावी निष्कासन",
+        ],
+        cons: [
+          "डायलिसिस केंद्र में निश्चित समय-सारणी",
+          "केंद्र से आने-जाने की आवश्यकता",
+          "प्रत्येक उपचार के साथ सुई डालना",
+          "आहार और तरल पदार्थ प्रतिबंध",
+          "उपचार के बाद थकान की संभावना",
+          "एक्सेस साइट जटिलताओं का जोखिम",
+        ],
+      },
+      peritonealDialysis: {
+        name: "पेरिटोनियल डायलिसिस",
+        introduction: "पेरिटोनियल डायलिसिस (पीडी) आपके पेट की परत (पेरिटोनियम) का उपयोग आपके रक्त को साफ करने के लिए एक प्राकृतिक फिल्टर के रूप में करता है। यह उपचार घर पर किया जाता है, जो आपको आपकी दैनिक दिनचर्या में अधिक लचीलापन और स्वतंत्रता प्रदान करता है।",
+        process: "एक कैथेटर शल्य चिकित्सा द्वारा आपके पेट में रखा जाता है। उपचार के दौरान, एक सफाई तरल पदार्थ (डायलीसेट) कैथेटर के माध्यम से आपकी पेरिटोनियल गुहा में बहता है, जहाँ यह अपशिष्ट और अतिरिक्त तरल पदार्थ को अवशोषित करता है। एक निश्चित समय के बाद, तरल पदार्थ बाहर निकाल दिया जाता है। यह मैन्युअल रूप से (सीएपीडी) या सोते समय मशीन का उपयोग करके (एपीडी) किया जा सकता है।",
+        prosTitle: "लाभ",
+        consTitle: "नुकसान",
+        pros: [
+          "अधिक स्वतंत्रता और लचीलापन",
+          "घर पर या यात्रा के दौरान किया जा सकता है",
+          "सुई की आवश्यकता नहीं",
+          "अधिक उदार आहार और तरल पदार्थ का सेवन",
+          "आपके शरीर पर हल्का (निरंतर)",
+          "अवशिष्ट किडनी कार्य का बेहतर संरक्षण",
+        ],
+        cons: [
+          "दैनिक उपचार की आवश्यकता",
+          "पेरिटोनाइटिस (संक्रमण) का खतरा",
+          "पेट में स्थायी कैथेटर",
+          "आपूर्ति के लिए भंडारण स्थान की आवश्यकता",
+          "वजन बढ़ना और शरीर की छवि संबंधी चिंताएँ",
+          "स्व-देखभाल या देखभाल करने वाले की सहायता की आवश्यकता",
+        ],
+      },
+      conservativeCare: {
+        name: "रूढ़िवादी देखभाल",
+        introduction: "रूढ़िवादी देखभाल (जिसे सहायक देखभाल भी कहा जाता है) एक उपचार दृष्टिकोण है जो डायलिसिस के बिना लक्षणों का प्रबंधन करने और जीवन की गुणवत्ता बनाए रखने पर केंद्रित है। यह विकल्प आमतौर पर उन लोगों के लिए माना जाता है जिन्हें डायलिसिस से लाभ नहीं हो सकता है या जो इसे नहीं करवाना चाहते हैं।",
+        process: "रूढ़िवादी देखभाल में किडनी फेलियर के लक्षणों को प्रबंधित करने के लिए दवाएं, आहार परिवर्तन और अन्य उपचार शामिल हैं। ध्यान आराम, लक्षण नियंत्रण और जीवन की गुणवत्ता पर है, न कि डायलिसिस के माध्यम से जीवन का विस्तार करने पर। स्वास्थ्य सेवा प्रदाताओं द्वारा नियमित निगरानी अभी भी महत्वपूर्ण है।",
+        prosTitle: "लाभ",
+        consTitle: "नुकसान",
+        pros: [
+          "कोई आक्रामक प्रक्रिया या सर्जरी नहीं",
+          "डायलिसिस उपचार पर कोई समय व्यतीत नहीं होता",
+          "जीवन की गुणवत्ता और आराम पर ध्यान",
+          "घर पर रह सकते हैं",
+          "डायलिसिस की जटिलताओं से बचा जाता है",
+          "अन्य गंभीर स्वास्थ्य स्थितियों वाले लोगों के लिए उपयुक्त हो सकता है",
+        ],
+        cons: [
+          "किडनी की कार्यक्षमता का ক্রমশः बिगड़ना",
+          "डायलिसिस की तुलना में कम जीवन प्रत्याशा",
+          "किडनी की कार्यक्षमता में गिरावट के साथ लक्षण बढ़ना",
+          "बढ़ते चिकित्सा समर्थन की आवश्यकता हो सकती है",
+          "लक्षण प्रबंधन के लिए अस्पताल में भर्ती होने की संभावना",
+        ],
+      }
+    },
+     healthIssues: {
+      title: "उन्नत किडनी फेलियर के साथ आम स्वास्थ्य समस्याएँ",
+      intro: "उन्नत किडनी फेलियर वाले लोगों को विभिन्न स्वास्थ्य समस्याओं का अनुभव हो सकता है क्योंकि उनकी किडनी अपशिष्ट को फ़िल्टर करने और शरीर में संतुलन बनाए रखने की क्षमता खो देती है।",
+      fluidOverload: {
+        name: "अतिरिक्त तरल पदार्थ (फ्लूइड ओवरलोड)",
+        description: "जब किडनी अतिरिक्त तरल पदार्थ को नहीं निकाल पाती है, तो यह शरीर में जमा हो जाता है, जिससे पैरों, टखनों, पैरों और कभी-कभी फेफड़ों के आसपास सूजन हो जाती है। इससे सांस लेने में कठिनाई, उच्च रक्तचाप और हृदय संबंधी समस्याएं हो सकती हैं।",
+        symptoms: "वजन बढ़ना, टखनों में सूजन, सांस की तकलीफ, और बढ़ा हुआ रक्तचाप।"
+      },
+      uremicSymptoms: {
+        name: "यूरेमिक लक्षण",
+        description: "यूरेमिया तब होता है जब रक्त में अपशिष्ट उत्पाद जमा हो जाते हैं। यह कई शरीर प्रणालियों को प्रभावित कर सकता है और कई प्रकार के लक्षण पैदा कर सकता है जो जीवन की गुणवत्ता और समग्र स्वास्थ्य को प्रभावित करते हैं।",
+        symptoms: "मतली, उल्टी, भूख न लगना, मुंह में धातु का स्वाद, खुजली वाली त्वचा, और भ्रम।"
+      },
+      excessiveFatigue: {
+        name: "अत्यधिक थकान",
+        description: "किडनी फेलियर अक्सर गंभीर थकान का कारण बनता है जो आराम करने से ठीक नहीं होती है। यह एनीमिया, अपशिष्ट उत्पादों के निर्माण, हार्मोनल असंतुलन और अन्य कारकों के कारण हो सकता है।",
+        symptoms: "लगातार थकान, कमजोरी, ध्यान केंद्रित करने में कठिनाई, और कम शारीरिक क्षमता।"
+      },
+      anemia: {
+        name: "एनीमिया",
+        description: "स्वस्थ किडनी एरिथ्रोपोइटिन नामक एक हार्मोन का उत्पादन करती है जो अस्थि मज्जा को लाल रक्त कोशिकाओं को बनाने का संकेत देता है। किडनी फेलियर के साथ, यह प्रक्रिया बाधित होती है, जिससे एनीमिया (लाल रक्त कोशिकाओं की कम संख्या) होता है।",
+        symptoms: "थकान, कमजोरी, पीली त्वचा, ठंड असहिष्णुता, चक्कर आना, और सांस की तकलीफ।"
+      },
+      highBloodPressure: {
+        name: "उच्च रक्तचाप",
+        description: "किडनी रक्तचाप को नियंत्रित करने में मदद करती है। जब वे विफल हो जाती हैं, तो रक्तचाप अक्सर बढ़ जाता है, जो एक खतरनाक चक्र में किडनी को और नुकसान पहुंचा सकता है। उच्च रक्तचाप हृदय रोग और स्ट्रोक के खतरे को भी बढ़ाता है।",
+        symptoms: "अक्सर कोई लक्षण नहीं होते हैं लेकिन सिरदर्द, दृष्टि समस्याएं और हृदय संबंधी जटिलताओं का खतरा बढ़ सकता है।"
+      },
+      dangerousPotassium: {
+        name: "खतरनाक पोटेशियम स्तर",
+        description: "किडनी शरीर में पोटेशियम संतुलन को नियंत्रित करती है। किडनी फेलियर के साथ, पोटेशियम खतरनाक स्तर (हाइपरकेलेमिया) तक बढ़ सकता है, जिससे गंभीर हृदय ताल समस्याएं और यहां तक कि कार्डियक अरेस्ट भी हो सकता है।",
+        symptoms: "मांसपेशियों में कमजोरी, सुन्नता, झुनझुनी, अनियमित दिल की धड़कन, और गंभीर मामलों में, दिल की धड़कन तेज होना।"
+      }
+    },
+    treatmentComparison: {
+      title: "उपचार तुलना",
+      intro: "यहाँ इन-सेंटर हेमोडायलिसिस, पेरिटोनियल डायलिसिस और रूढ़िवादी देखभाल की मुख्य विशेषताओं पर एक तुलनात्मक दृष्टि है।",
+      feature: "विशेषता",
+      hd: "इन-सेंटर हेमोडायलिसिस",
+      pd: "पेरिटोनियल डायलिसिस",
+      cc: "रूढ़िवादी देखभाल",
+      location: "स्थान",
+      locationHd: "डायलिसिस केंद्र",
+      locationPd: "घर",
+      locationCc: "क्लिनिक विज़िट के साथ घर",
+      frequency: "आवृत्ति",
+      frequencyHd: "प्रति सप्ताह 3 बार",
+      frequencyPd: "दैनिक (4-5 एक्सचेंज या रात भर)",
+      frequencyCc: "नियमित क्लिनिक विज़िट",
+      duration: "अवधि",
+      durationHd: "प्रति सत्र 3-5 घंटे",
+      durationPd: "प्रति एक्सचेंज 30-40 मिनट या रात भर 8-10 घंटे",
+      durationCc: "निरंतर लक्षण प्रबंधन",
+      access: "पहुँच",
+      accessHd: "बांह में फिस्टुला या ग्राफ्ट",
+      accessPd: "पेट में कैथेटर",
+      accessCc: "कोई आवश्यकता नहीं",
+      dietRestrictions: "आहार प्रतिबंध",
+      dietHd: "अधिक प्रतिबंधात्मक",
+      dietPd: "कम प्रतिबंधात्मक",
+      dietCc: "मध्यम रूप से प्रतिबंधात्मक",
+      travelFlexibility: "यात्रा लचीलापन",
+      travelHd: "सीमित, अग्रिम योजना की आवश्यकता",
+      travelPd: "अधिक लचीला, आपूर्ति भेजी जा सकती है",
+      travelCc: "दवा प्रबंधन के साथ लचीला",
+      independence: "स्वतंत्रता",
+      independenceHd: "केंद्र अनुसूची पर निर्भर",
+      independencePd: "अधिक स्वतंत्र",
+      independenceCc: "समर्थन के साथ स्वतंत्र",
+      medicalSupport: "चिकित्सा सहायता",
+      medicalHd: "उपचार के दौरान कर्मचारी उपस्थित",
+      medicalPd: "आवधिक क्लिनिक विज़िट के साथ स्व-देखभाल",
+      medicalCc: "स्वास्थ्य सेवा दल द्वारा नियमित निगरानी",
+      lifeExpectancy: "जीवन प्रत्याशा",
+      lifeHd: "उपचार के साथ विस्तारित",
+      lifePd: "उपचार के साथ विस्तारित",
+      lifeCc: "डायलिसिस की तुलना में कम",
+    },
+    complications: {
+      title: "उपचार जटिलताएँ",
+      intro: "प्रत्येक उपचार विकल्प में संभावित जटिलताएँ होती हैं जिन पर आपके निर्णय लेने के दौरान विचार किया जाना चाहिए।",
+      hd: {
+        name: "हेमोडायलिसिस (एचडी) जटिलताएँ",
+        items: [
+          { title: "डायलिसिस-संबंधी जटिलताएँ", description: "एक्सेस पॉइंट की समस्याएं हेमोडायलिसिस वाले लोगों के अस्पताल में अतिरिक्त दौरे करने का सबसे आम कारण हैं। आम समस्याओं में संक्रमण (सेप्सिस), थक्के जमने से रुकावट (थ्रोम्बोसिस), और खराब रक्त प्रवाह (स्टेनोसिस) शामिल हैं। ये समस्याएं हेमोडायलिसिस को काम करने से रोक सकती हैं।" },
+          { title: "स्टेनोसिस", description: "स्टेनोसिस (रक्त वाहिकाओं का संकुचित होना) एक्सेस पॉइंट के माध्यम से रक्त के प्रवाह को धीमा कर देता है। स्टेनोसिस आमतौर पर धीरे-धीरे होता है और डायलिसिस के बाद रक्तस्राव को रोकने में अधिक समय लगने जैसे शुरुआती चेतावनी संकेत होते हैं। स्टेनोसिस के उपचार में शामिल हैं: वाहिका में एक छोटा गुब्बारा डालना और फिर उसे फुलाना (एंजियोप्लास्टी); एक धातु विस्तारक (स्टेंट) का उपयोग करना।" },
+          { title: "थ्रोम्बोसिस", description: "हेमोडायलिसिस के साथ रक्त का थक्का जमना (थ्रोम्बोसिस) हो सकता है। रक्त में प्लेटलेट्स नामक थक्के बनाने वाली कोशिकाएं होती हैं। प्लेटलेट्स सामान्य रूप से क्षतिग्रस्त रक्त वाहिकाओं (जैसे घावों में) को सील करने के लिए एक साथ चिपक जाती हैं। वे फिस्टुला या ग्राफ्ट में निशान ऊतक और क्षतिग्रस्त रक्त वाहिका दीवारों से चिपक सकती हैं, खासकर सुई चुभन के आसपास और जब रक्त प्रवाह धीमा होता है। इसका मतलब है कि फिस्टुला काम करना बंद कर सकता है।" },
+          { title: "अन्य जटिलताएँ", description: "उपचार के दौरान निम्न रक्तचाप, मांसपेशियों में ऐंठन, खुजली, नींद की समस्याएं, एनीमिया, हड्डी रोग, अवसाद और चिंता।" },
+        ]
+      },
+      pd: {
+        name: "पेरिटोनियल डायलिसिस (पीडी) जटिलताएँ",
+        items: [
+          { title: "संक्रमण", description: "पेरिटोनियल डायलिसिस के साथ संक्रमण सबसे आम समस्या है। पेरिटोनाइटिस पेट (बेली) में एक संक्रमण है जो गंभीर हो सकता है। यह संक्रमण तब होता है जब संक्रमण पेट के भीतर पेरिटोनियल स्थान में प्रवेश करता है। अन्य समस्याओं में हर्निया, खराब जल निकासी, निकास स्थल का संक्रमण और कैथेटर से रिसाव शामिल हैं। ये समस्याएं पेरिटोनियल डायलिसिस को काम करने से रोक सकती हैं।" },
+          { title: "खराब जल निकासी और रिसाव", description: "खराब जल निकासी एक से अधिक कारणों से हो सकती है। यह इसलिए हो सकता है porque फाइब्रिन (एक प्रोटीन) नामक पदार्थ पीडी कैथेटर को अवरुद्ध करता है। आमतौर पर ट्यूब को निचोड़कर या नर्स द्वारा दवाएं इंजेक्ट करवाकर साफ किया जा सकता है।" },
+          { title: "हर्निया", description: "हर्निया आमतौर पर पेट में एक दृश्य गांठ होती है। यह तब हो सकता है जब शरीर का कोई आंतरिक भाग, जैसे कोई अंग, उस स्थान की दीवार से बाहर निकल जाता है जहाँ वह स्थित होता है। पेरिटोनियल गुहा में बढ़ा हुआ दबाव पेट की मांसपेशियों की कमजोरी का कारण बन सकता है और हर्निया होने की अधिक संभावना बना सकता है। हर्निया में अक्सर कोई लक्षण नहीं होते हैं और केवल तब दर्द होता है जब लोग भारी वस्तु उठाते हैं, झुकते हैं, या खांसते हैं। हर्निया को ठीक करने के लिए आमतौर पर सर्जरी की आवश्यकता होती है।" },
+          { title: "अन्य जटिलताएँ", description: "डायलिसिस द्रव से ग्लूकोज अवशोषण के कारण वजन बढ़ना, कैथेटर और पेट में तरल पदार्थ के कारण शरीर की छवि में परिवर्तन, डायलिसिस द्रव में प्रोटीन की हानि, समय के साथ पेरिटोनियल झिल्ली में परिवर्तन, पीठ दर्द।" },
+        ]
+      },
+      cc: {
+        name: "रूढ़िवादी देखभाल संबंधी विचार",
+        items: [
+          { title: "प्रगतिशील लक्षण", description: "डायलिसिस के बिना, किडनी की कार्यक्षमता में गिरावट जारी रहेगी, जिससे समय के साथ लक्षण बिगड़ते जाएंगे। इनमें बढ़ती थकान, मतली, भ्रम, खुजली और तरल पदार्थ का निर्माण शामिल हो सकता है। दवाएं और आहार प्रबंधन इन लक्षणों को नियंत्रित करने में मदद कर सकते हैं लेकिन उन्हें पूरी तरह से समाप्त नहीं कर सकते हैं।" },
+          { title: "जीवन की गुणवत्ता संबंधी विचार", description: "रूढ़िवादी देखभाल का ध्यान हर कीमत पर जीवन का विस्तार करने के बजाय जीवन की गुणवत्ता बनाए रखने पर है। इस दृष्टिकोण में सावधानीपूर्वक लक्षण प्रबंधन, भावनात्मक समर्थन और अग्रिम देखभाल योजना शामिल है। कुछ रोगियों के लिए, विशेष रूप से कई अन्य स्वास्थ्य स्थितियों वाले लोगों के लिए, यह दृष्टिकोण डायलिसिस की तुलना में बेहतर समग्र जीवन की गुणवत्ता प्रदान कर सकता है।" },
+          { title: "समर्थन की आवश्यकताएँ", description: "जैसे-जैसे किडनी की कार्यक्षमता घटती है, रोगियों को स्वास्थ्य सेवा प्रदाताओं, परिवार के सदस्यों और देखभाल करने वालों से बढ़ते समर्थन की आवश्यकता हो सकती है। इसमें स्वास्थ्य पेशेवरों द्वारा घर का दौरा, दैनिक गतिविधियों में सहायता और अंततः प्रशामक देखभाल सेवाएं शामिल हो सकती हैं।" },
+        ]
+      }
+    },
+    preferences: {
+      title: "आपकी उपचार प्राथमिकताएँ",
+      intro: "प्रत्येक कारक के लिए अपनी प्राथमिकताएँ इंगित करें। यह आपके परिणामों को वैयक्तिकृत करने में मदद करेगा।",
+      independence: "स्वतंत्रता और लचीलापन",
+      medicalSupervision: "चिकित्सा पर्यवेक्षण",
+      travelAbility: "यात्रा क्षमता",
+      dietFlexibility: "आहार लचीलापन",
+      selfCareAbility: "स्व-देखभाल क्षमता",
+      physicalCondition: "शारीरिक स्थिति",
+      hasHerniaOrSurgery: "हाल ही में पेट की सर्जरी या मौजूदा हर्निया",
+      hasVascularAccessIssues: "संवहनी पहुंच संबंधी समस्याएं (जैसे, एकाधिक विफल फिस्टुला, खराब नसें)",
+    },
+    results: {
+      title: "आपके व्यक्तिगत परिणाम",
+      basedOnPreferences: "आपकी प्राथमिकताओं के आधार पर, {{treatmentName}} आपकी आवश्यकताओं के साथ {{matchPercentage}}% मेल खाता है।",
+      hemodialysisDesc: "यह विकल्प नियमित चिकित्सा पर्यवेक्षण प्रदान करता है लेकिन डायलिसिस केंद्र में एक निश्चित समय-सारणी की आवश्यकता होती है।",
+      peritonealDialysisDesc: "यह विकल्प अधिक लचीलापन प्रदान करता है लेकिन दैनिक स्व-देखभाल की आवश्यकता होती है।",
+      conservativeCareDesc: "यह विकल्प सक्रिय उपचार के माध्यम से जीवन का विस्तार करने की आपकी प्राथमिकता के साथ अच्छी तरह से संरेखित नहीं हो सकता है।",
+      nextStepsTitle: "अगले कदम",
+      nextStepsIntro: "याद रखें, यह टूल सामान्य मार्गदर्शन प्रदान करता है। अपनी विशिष्ट स्थिति के लिए सबसे अच्छा निर्णय लेने के लिए इन विकल्पों पर अपनी स्वास्थ्य सेवा टीम के साथ चर्चा करें।",
+      questionsTitle: "अपने डॉक्टर से पूछने के लिए प्रश्न",
+      questionsItems: [
+        "मेरी चिकित्सा स्थिति के लिए कौन सा उपचार सबसे अच्छा है?",
+        "प्रत्येक विकल्प के साथ मेरे लिए विशिष्ट जोखिम क्या हैं?",
+        "प्रत्येक विकल्प मेरे दैनिक जीवन को कैसे प्रभावित करेगा?",
+        "प्रत्येक उपचार विकल्प के लिए मुझे किस समर्थन की आवश्यकता होगी?",
+        "समय के साथ मेरी उपचार आवश्यकताएँ कैसे बदल सकती हैं?"
+      ],
+      resourcesTitle: "अतिरिक्त संसाधन",
+      resourcesItems: [
+        "राष्ट्रीय किडनी फाउंडेशन (या स्थानीय समकक्ष)",
+        "स्थानीय किडनी सहायता समूह",
+        "डायलिसिस केंद्र शैक्षिक सामग्री",
+        "किडनी रोगी सहकर्मी परामर्श कार्यक्रम"
+      ],
+      hdKeyFactorHernia: "पेट की सर्जरी के इतिहास वाले रोगियों के लिए अक्सर पसंदीदा",
+      hdKeyFactorVascular: "खराब संवहनी पहुंच के साथ चुनौतीपूर्ण हो सकता है",
+      pdKeyFactorVascular: "संवहनी पहुंच समस्याओं वाले रोगियों के लिए अक्सर पसंदीदा",
+      pdKeyFactorHernia: "पेट की सर्जरी के इतिहास वाले रोगियों के लिए चुनौतीपूर्ण हो सकता है",
+      ccKeyFactorConflict: "यदि अन्य विकल्पों में उच्च जोखिम हों तो विचार किया जा सकता है"
+    },
+    footer: {
+      copyright: "मेरी किडनी देखभाल विकल्प टूल © {{year}}",
+      disclaimer: "यह टूल केवल शैक्षिक जानकारी प्रदान करता है और चिकित्सा सलाह का विकल्प नहीं है।"
+    }
+  },
+  mr: {
+    appName: "माझे किडनी केअर चॉइसेस टूल",
+    nav: {
+      basics: "मूलभूत माहिती",
+      healthIssues: "आरोग्याच्या समस्या",
+      treatmentOptions: "उपचार पर्याय",
+      complications: "गुंतागुंत",
+      yourPreferences: "तुमची प्राधान्ये",
+      results: "निकाल",
+    },
+    buttons: {
+      letsExplore: "चला एक्सप्लोर करूया",
+      continueTo: "{{section}} वर सुरू ठेवा",
+      seeResults: "तुमचे निकाल पहा",
+      startOver: "पुन्हा सुरू करा",
+    },
+    labels: {
+        notImportant: "महत्वाचे नाही",
+        neutral: "तटस्थ",
+        veryImportant: "खूप महत्वाचे",
+        slightlyImportant: "थोडे महत्वाचे",
+        important: "महत्वाचे",
+        poor: "खराब",
+        average: "सरासरी",
+        excellent: "उत्कृष्ट",
+        yes: "होय",
+        no: "नाही",
+        keyFactors: "मुख्य घटक:",
+        symptomsInclude: "लक्षणांमध्ये समाविष्ट आहे: {{symptoms}}",
+    },
+    welcome: {
+      title: "माझ्या किडनी केअर चॉइसेस टूलमध्ये आपले स्वागत आहे",
+      intro: "हे इंटरॲक्टिव्ह टूल तुम्हाला किडनीच्या विविध उपचार पर्यायांबद्दल समजून घेण्यास आणि तुमच्या जीवनशैली, वैद्यकीय गरजा आणि वैयक्तिक प्राधान्यांनुसार सर्वोत्तम जुळणारा दृष्टिकोन शोधण्यात मदत करेल.",
+      aboutTitle: "या टूलबद्दल",
+      aboutIntro: "किडनी निकामी झाल्यास, तुमच्या उपचारांबद्दल माहितीपूर्ण निर्णय घेण्यासाठी उपचारांचे पर्याय समजून घेणे महत्त्वाचे आहे. हे टूल तुम्हाला मार्गदर्शन करेल:",
+      aboutPoints: [
+        "किडनी निकामी होणे आणि उपचारांच्या पर्यायांबद्दल मूलभूत माहिती",
+        "किडनी निकामी झाल्यामुळे उद्भवणाऱ्या सामान्य आरोग्य समस्या",
+        "उपचार पद्धतींची तपशीलवार तुलना",
+        "विविध उपचारांमुळे होणारी संभाव्य गुंतागुंत",
+        "तुमच्या प्राधान्यांवर आधारित वैयक्तिक मूल्यांकन"
+      ],
+      note: "टीप: हे टूल केवळ शैक्षणिक माहिती पुरवते आणि वैद्यकीय सल्ल्याचा पर्याय नाही. उपचारांबाबत कोणताही निर्णय घेण्यापूर्वी नेहमी तुमच्या आरोग्य सेवा टीमचा सल्ला घ्या."
+    },
+    understandingTreatments: {
+      title: "उपचार पर्याय समजून घेणे",
+      intro: "किडनी निकामी होण्याच्या प्राथमिक उपचार पद्धतींबद्दल जाणून घ्या. प्रत्येक पर्यायाचे स्वतःचे फायदे आणि विचार आहेत.",
+      sectionTitleIntro: "परिचय",
+      sectionTitleProcess: "प्रक्रिया",
+      hemodialysis: {
+        name: "हेमोडायलिसिस",
+        introduction: "हेमोडायलिसिस हा एक उपचार आहे ज्यामध्ये एका विशेष फिल्टर (कृत्रिम किडनी) असलेल्या मशीनचा वापर करून तुमच्या रक्तातील कचरा आणि अतिरिक्त द्रवपदार्थ गाळले जातात. हा उपचार सामान्यतः डायलिसिस केंद्रात केला जातो.",
+        process: "हेमोडायलिसिस दरम्यान, रक्त शस्त्रक्रियेने तयार केलेल्या प्रवेश बिंदूतून (सामान्यतः तुमच्या हातातील) तुमच्या शरीरातून बाहेर पंप केले जाते, डायलायझरद्वारे गाळले जाते आणि तुमच्या शरीरात परत केले जाते. प्रत्येक सत्र सामान्यतः ३-५ तास चालते आणि आठवड्यातून ३ वेळा केले जाते.",
+        prosTitle: "फायदे",
+        consTitle: "तोटे",
+        pros: [
+          "उपचारादरम्यान वैद्यकीय कर्मचारी उपस्थित असतात",
+          "घरी कोणतीही दैनंदिन प्रक्रिया नाही",
+          "कर्मचारी आणि इतर रुग्णांशी नियमित सामाजिक संवाद",
+          "घरी कोणतीही सामग्री साठवली जात नाही",
+          "उपचार-मुक्त दिवस",
+          "कचरा उत्पादनांचे प्रभावी उच्चाटन",
+        ],
+        cons: [
+          "डायलिसिस केंद्रात निश्चित वेळापत्रक",
+          "केंद्रातून ये-जा करणे आवश्यक",
+          "प्रत्येक उपचारासाठी सुई घालणे",
+          "आहार आणि द्रवपदार्थांचे निर्बंध",
+          "उपचारानंतर थकवा येण्याची शक्यता",
+          "प्रवेश साइटवर गुंतागुंत होण्याचा धोका",
+        ],
+      },
+      peritonealDialysis: {
+        name: "पेरिटोनियल डायलिसिस",
+        introduction: "पेरिटोनियल डायलिसिस (पीडी) तुमच्या पोटाच्या आवरणाचा (पेरिटोनियम) वापर करून तुमचे रक्त स्वच्छ करण्यासाठी नैसर्गिक फिल्टर म्हणून करते. हा उपचार घरी केला जातो, ज्यामुळे तुम्हाला तुमच्या दैनंदिन कामांमध्ये अधिक लवचिकता आणि स्वातंत्र्य मिळते.",
+        process: "एक कॅथेटर शस्त्रक्रियेद्वारे तुमच्या पोटात टाकला जातो. उपचारादरम्यान, एक स्वच्छता द्रव (डायलिसेट) कॅथेटरद्वारे तुमच्या पेरिटोनियल पोकळीत जातो, जिथे तो कचरा आणि अतिरिक्त द्रव शोषून घेतो. ठराविक वेळेनंतर, द्रव बाहेर काढला जातो. हे स्वतः (सीएपीडी) किंवा झोपताना मशीन वापरून (एपीडी) केले जाऊ शकते.",
+        prosTitle: "फायदे",
+        consTitle: "तोटे",
+        pros: [
+          "अधिक स्वातंत्र्य आणि लवचिकता",
+          "घरी किंवा प्रवासात करता येते",
+          "सुईची गरज नाही",
+          "अधिक उदार आहार आणि द्रवपदार्थांचे सेवन",
+          "तुमच्या शरीरावर सौम्य (सतत)",
+          "मूत्रपिंडाच्या उर्वरित कार्याचे उत्तम संरक्षण",
+        ],
+        cons: [
+          "दैनंदिन उपचारांची आवश्यकता",
+          "पेरिटोनायटिस (संसर्ग) होण्याचा धोका",
+          "पोटात कायमस्वरूपी कॅथेटर",
+          "सामग्रीसाठी जागेची आवश्यकता",
+          "वजन वाढणे आणि शरीर प्रतिमेबद्दल चिंता",
+          "स्वतःची काळजी घेणे किंवा काळजीवाहू व्यक्तीची मदत आवश्यक",
+        ],
+      },
+      conservativeCare: {
+        name: "पुराणमतवादी काळजी",
+        introduction: "पुराणमतवादी काळजी (जिला सहाय्यक काळजी देखील म्हणतात) हा एक उपचार दृष्टिकोन आहे जो डायलिसिसशिवाय लक्षणे व्यवस्थापित करण्यावर आणि जीवनाची गुणवत्ता टिकवून ठेवण्यावर लक्ष केंद्रित करतो. हा पर्याय सामान्यतः अशा लोकांसाठी विचारात घेतला जातो ज्यांना डायलिसिसचा फायदा होणार नाही किंवा ज्यांना ते करायचे नाही.",
+        process: "पुराणमतवादी काळजीमध्ये मूत्रपिंड निकामी होण्याची लक्षणे व्यवस्थापित करण्यासाठी औषधे, आहारात बदल आणि इतर उपचारांचा समावेश होतो. यामध्ये आराम, लक्षण नियंत्रण आणि जीवनाची गुणवत्ता यावर लक्ष केंद्रित केले जाते, डायलिसिसद्वारे आयुष्य वाढवण्यावर नाही. आरोग्य सेवा प्रदात्यांकडून नियमित देखरेख अजूनही महत्त्वाची आहे.",
+        prosTitle: "फायदे",
+        consTitle: "तोटे",
+        pros: [
+          "कोणतीही आक्रमक प्रक्रिया किंवा शस्त्रक्रिया नाही",
+          "डायलिसिस उपचारांवर वेळ वाया जात नाही",
+          "जीवनाची गुणवत्ता आणि आराम यावर लक्ष केंद्रित",
+          "घरी राहता येते",
+          "डायलिसिसच्या गुंतागुंती टाळता येतात",
+          "इतर गंभीर आरोग्य समस्या असलेल्यांसाठी योग्य असू शकते",
+        ],
+        cons: [
+          "मूत्रपिंडाच्या कार्यात हळूहळू बिघाड",
+          "डायलिसिसपेक्षा कमी आयुर्मान",
+          "मूत्रपिंडाच्या कार्यात घट झाल्यामुळे लक्षणे वाढणे",
+          "वाढत्या वैद्यकीय मदतीची आवश्यकता भासू शकते",
+          "लक्षणे व्यवस्थापनासाठी रुग्णालयात दाखल होण्याची शक्यता",
+        ],
+      }
+    },
+    healthIssues: {
+      title: "प्रगत किडनी निकामी झाल्यामुळे उद्भवणाऱ्या सामान्य आरोग्य समस्या",
+      intro: "प्रगत किडनी निकामी झालेल्या लोकांना विविध आरोग्य समस्या येऊ शकतात कारण त्यांची किडनी कचरा गाळण्याची आणि शरीरातील संतुलन राखण्याची क्षमता गमावते.",
+      fluidOverload: {
+        name: "अतिरिक्त द्रव (फ्लूइड ओव्हरलोड)",
+        description: "जेव्हा किडनी अतिरिक्त द्रव काढू शकत नाही, तेव्हा ते शरीरात जमा होते, ज्यामुळे पाय, घोटे, पाय आणि कधीकधी फुफ्फुसांभोवती सूज येते. यामुळे श्वास घेण्यास त्रास, उच्च रक्तदाब आणि हृदयाच्या समस्या उद्भवू शकतात.",
+        symptoms: "वजन वाढणे, घोट्याला सूज येणे, धाप लागणे आणि रक्तदाब वाढणे."
+      },
+      uremicSymptoms: {
+        name: "युरेमिक लक्षणे",
+        description: "जेव्हा रक्तामध्ये टाकाऊ पदार्थ जमा होतात तेव्हा युरेमिया होतो. याचा परिणाम अनेक शारीरिक प्रणालींवर होऊ शकतो आणि जीवनाचा दर्जा व एकूण आरोग्यावर परिणाम करणारी विविध लक्षणे उद्भवू शकतात.",
+        symptoms: "मळमळ, उलट्या, भूक न लागणे, तोंडाला धातूसारखी चव येणे, त्वचेला खाज सुटणे आणि गोंधळल्यासारखे होणे."
+      },
+      excessiveFatigue: {
+        name: "अति थकवा",
+        description: "किडनी निकामी झाल्यामुळे अनेकदा तीव्र थकवा येतो जो विश्रांती घेतल्याने कमी होत नाही. याचे कारण ॲनिमिया, टाकाऊ पदार्थांचा जमाव, हार्मोनल असंतुलन आणि इतर घटक असू शकतात.",
+        symptoms: "सतत थकवा, अशक्तपणा, लक्ष केंद्रित करण्यात अडचण आणि शारीरिक क्षमता कमी होणे."
+      },
+      anemia: {
+        name: "ॲनिमिया (रक्तक्षय)",
+        description: "निरोगी किडनी एरिथ्रोपोइटिन नावाचे हार्मोन तयार करतात जे अस्थिमज्जेला लाल रक्तपेशी तयार करण्याचे संकेत देते. किडनी निकामी झाल्यास ही प्रक्रिया बाधित होते, ज्यामुळे ॲनिमिया (लाल रक्तपेशींची कमतरता) होतो.",
+        symptoms: "थकवा, अशक्तपणा, त्वचा फिकट होणे, थंडी सहन न होणे, चक्कर येणे आणि धाप लागणे."
+      },
+      highBloodPressure: {
+        name: "उच्च रक्तदाब",
+        description: "किडनी रक्तदाब नियंत्रित करण्यास मदत करतात. जेव्हा त्या निकामी होतात, तेव्हा रक्तदाब अनेकदा वाढतो, ज्यामुळे धोकादायक चक्रात किडनीला आणखी नुकसान होऊ शकते. उच्च रक्तदाबामुळे हृदयरोग आणि पक्षाघाताचा धोकाही वाढतो.",
+        symptoms: "बहुतेक वेळा कोणतीही लक्षणे दिसत नाहीत, परंतु डोकेदुखी, दृष्टी समस्या आणि हृदय व रक्तवाहिन्यासंबंधी गुंतागुंत होण्याचा धोका वाढू शकतो."
+      },
+      dangerousPotassium: {
+        name: "धोकादायक पोटॅशियम पातळी",
+        description: "किडनी शरीरातील पोटॅशियमचे संतुलन नियंत्रित करतात. किडनी निकामी झाल्यास, पोटॅशियम धोकादायक पातळीपर्यंत (हायपरकलेमिया) वाढू शकते, ज्यामुळे हृदयाच्या गंभीर लय समस्या आणि हृदयविकाराचा झटका देखील येऊ शकतो.",
+        symptoms: "स्नायू कमकुवत होणे, बधिरता, मुंग्या येणे, हृदयाचे ठोके अनियमित होणे आणि गंभीर प्रकरणांमध्ये छातीत धडधडणे."
+      }
+    },
+    treatmentComparison: {
+      title: "उपचार तुलना",
+      intro: "येथे इन-सेंटर हेमोडायलिसिस, पेरिटोनियल डायलिसिस आणि पुराणमतवादी काळजी यांच्या मुख्य वैशिष्ट्यांची तुलना दिली आहे.",
+      feature: "वैशिष्ट्य",
+      hd: "इन-सेंटर हेमोडायलिसिस",
+      pd: "पेरिटोनियल डायलिसिस",
+      cc: "पुराणमतवादी काळजी",
+      location: "स्थान",
+      locationHd: "डायलिसिस केंद्र",
+      locationPd: "घर",
+      locationCc: "क्लिनिक भेटींसह घर",
+      frequency: "वारंवारता",
+      frequencyHd: "आठवड्यातून ३ वेळा",
+      frequencyPd: "दररोज (४-५ एक्सचेंज किंवा रात्रभर)",
+      frequencyCc: "नियमित क्लिनिक भेटी",
+      duration: "कालावधी",
+      durationHd: "प्रति सत्र ३-५ तास",
+      durationPd: "प्रति एक्सचेंज ३०-४० मिनिटे किंवा रात्रभर ८-१० तास",
+      durationCc: "सतत लक्षण व्यवस्थापन",
+      access: "प्रवेश",
+      accessHd: "हातामध्ये फिस्टुला किंवा ग्राफ्ट",
+      accessPd: "पोटात कॅथेटर",
+      accessCc: "आवश्यक नाही",
+      dietRestrictions: "आहार निर्बंध",
+      dietHd: "अधिक प्रतिबंधात्मक",
+      dietPd: "कमी प्रतिबंधात्मक",
+      dietCc: "मध्यम प्रतिबंधात्मक",
+      travelFlexibility: "प्रवासाची लवचिकता",
+      travelHd: "मर्यादित, आगाऊ नियोजन आवश्यक",
+      travelPd: "अधिक लवचिक, साहित्य पाठवले जाऊ शकते",
+      travelCc: "औषध व्यवस्थापनासह लवचिक",
+      independence: "स्वातंत्र्य",
+      independenceHd: "केंद्र वेळापत्रकावर अवलंबून",
+      independencePd: "अधिक स्वतंत्र",
+      independenceCc: "समर्थनासह स्वतंत्र",
+      medicalSupport: "वैद्यकीय सहाय्य",
+      medicalHd: "उपचारादरम्यान कर्मचारी उपस्थित",
+      medicalPd: "नियतकालिक क्लिनिक भेटींसह स्वतःची काळजी",
+      medicalCc: "आरोग्य सेवा टीमद्वारे नियमित देखरेख",
+      lifeExpectancy: "आयुर्मान",
+      lifeHd: "उपचाराने वाढलेले",
+      lifePd: "उपचाराने वाढलेले",
+      lifeCc: "डायलिसिसपेक्षा कमी",
+    },
+     complications: {
+      title: "उपचारातील गुंतागुंत",
+      intro: "प्रत्येक उपचार पर्यायामध्ये संभाव्य गुंतागुंत असते ज्याचा निर्णय घेताना विचार केला पाहिजे.",
+      hd: {
+        name: "हेमोडायलिसिस (एचडी) गुंतागुंत",
+        items: [
+          { title: "डायलिसिस-संबंधित गुंतागुंत", description: "प्रवेश बिंदूतील समस्या हे हेमोडायलिसिस घेणाऱ्या लोकांना रुग्णालयात अतिरिक्त भेटी देण्याचे सर्वात सामान्य कारण आहे. सामान्य समस्यांमध्ये संसर्ग (सेप्सिस), रक्ताच्या गुठळ्या झाल्यामुळे अडथळा (थ्रोम्बोसिस) आणि खराब रक्त प्रवाह (स्टेनोसिस) यांचा समावेश होतो. या समस्या हेमोडायलिसिसच्या कार्यात अडथळा आणू शकतात." },
+          { title: "स्टेनोसिस", description: "स्टेनोसिस (रक्तवाहिन्या अरुंद होणे) प्रवेश बिंदूतून रक्त प्रवाह मंदावतो. स्टेनोसिस सामान्यतः हळूहळू होतो आणि डायलिसिसनंतर रक्तस्त्राव थांबण्यास जास्त वेळ लागणे यासारखी सुरुवातीची चेतावणी चिन्हे असतात. स्टेनोसिसच्या उपचारांमध्ये हे समाविष्ट आहे: रक्तवाहिनीत एक लहान फुगा घालणे आणि नंतर तो फुगवणे (अँजिओप्लास्टी); धातूचा विस्तारक (स्टेंट) वापरणे." },
+          { title: "थ्रोम्बोसिस", description: "हेमोडायलिसिसमुळे रक्ताच्या गुठळ्या (थ्रोम्बोसिस) होऊ शकतात. रक्तात प्लेटलेट्स नावाच्या गुठळ्या करणाऱ्या पेशी असतात. प्लेटलेट्स सामान्यतः खराब झालेल्या रक्तवाहिन्यांना (उदा. जखमांमध्ये) बंद करण्यासाठी एकत्र चिकटतात. त्या फिस्टुला किंवा ग्राफ्टमधील व्रण ऊतक आणि खराब झालेल्या रक्तवाहिन्यांच्या भिंतींना चिकटू शकतात, विशेषतः सुई टोचलेल्या जागेभोवती आणि जेव्हा रक्त प्रवाह मंद असतो. याचा अर्थ फिस्टुला काम करणे थांबवू शकतो." },
+          { title: "इतर गुंतागुंत", description: "उपचारादरम्यान कमी रक्तदाब, स्नायूंमध्ये पेटके येणे, खाज सुटणे, झोपेच्या समस्या, ॲनिमिया, हाडांचे आजार, नैराश्य आणि चिंता." },
+        ]
+      },
+      pd: {
+        name: "पेरिटोनियल डायलिसिस (पीडी) गुंतागुंत",
+        items: [
+          { title: "संसर्ग", description: "पेरिटोनियल डायलिसिसमधील सर्वात सामान्य समस्या म्हणजे संसर्ग. पेरिटोनायटिस हा पोटातील (बेली) संसर्ग आहे जो गंभीर असू शकतो. हा संसर्ग तेव्हा होतो जेव्हा पोटातील पेरिटोनियल जागेत संसर्ग प्रवेश करतो. इतर समस्यांमध्ये हर्निया, खराब ड्रेनेज, एक्झिट साइटचा संसर्ग आणि कॅथेटरमधून गळती यांचा समावेश होतो. या समस्या पेरिटोनियल डायलिसिसच्या कार्यात अडथळा आणू शकतात." },
+          { title: "खराब ड्रेनेज आणि गळती", description: "खराब ड्रेनेज एकापेक्षा जास्त कारणांमुळे होऊ शकते. फायब्रिन (एक प्रथिन) नावाचा पदार्थ पीडी कॅथेटरला ब्लॉक करतो तेव्हा असे होऊ शकते. सामान्यतः ट्यूब पिळून किंवा नर्सकडून औषधे टोचून ती साफ करता येते." },
+          { title: "हर्निया", description: "हर्निया सामान्यतः पोटात दिसणारी गाठ असते. जेव्हा शरीराचा एखादा अंतर्गत भाग, जसे की एखादा अवयव, ज्या जागेत तो असतो त्या जागेच्या भिंतीतून बाहेर ढकलला जातो तेव्हा असे होऊ शकते. पेरिटोनियल पोकळीतील वाढलेला दाब पोटाच्या स्नायूंच्या कमकुवतपणास कारणीभूत ठरू शकतो आणि हर्निया होण्याची शक्यता वाढवतो. हर्नियाला अनेकदा कोणतीही लक्षणे नसतात आणि जड वस्तू उचलताना, वाकताना किंवा खोकतानाच वेदना होतात. हर्निया दुरुस्त करण्यासाठी सामान्यतः शस्त्रक्रिया आवश्यक असते." },
+          { title: "इतर गुंतागुंत", description: "डायलिसिस द्रवातील ग्लुकोज शोषल्यामुळे वजन वाढणे, कॅथेटर आणि पोटातील द्रवामुळे शरीर प्रतिमेत बदल, डायलिसिस द्रवात प्रथिनांचे नुकसान, कालांतराने पेरिटोनियल झिल्लीतील बदल, पाठदुखी." },
+        ]
+      },
+      cc: {
+        name: "पुराणमतवादी काळजी विचार",
+        items: [
+          { title: "वाढणारी लक्षणे", description: "डायलिसिसशिवाय, किडनीचे कार्य कमी होत राहील, ज्यामुळे कालांतराने लक्षणे वाढत जातील. यामध्ये वाढता थकवा, मळमळ, गोंधळ, खाज सुटणे आणि द्रव जमा होणे यांचा समावेश असू शकतो. औषधे आणि आहार व्यवस्थापन ही लक्षणे नियंत्रित करण्यास मदत करू शकतात परंतु ती पूर्णपणे काढून टाकू शकत नाहीत." },
+          { title: "जीवनाचा दर्जा विचार", description: "पुराणमतवादी काळजीचा भर जीवनाचा दर्जा टिकवून ठेवण्यावर असतो, कोणत्याही परिस्थितीत आयुष्य वाढवण्यावर नाही. या दृष्टिकोनमध्ये काळजीपूर्वक लक्षण व्यवस्थापन, भावनिक आधार आणि आगाऊ काळजी नियोजन यांचा समावेश असतो. काही रुग्णांसाठी, विशेषतः ज्यांना इतर अनेक आरोग्य समस्या आहेत, त्यांच्यासाठी हा दृष्टिकोन डायलिसिसपेक्षा चांगला एकूण जीवनाचा दर्जा देऊ शकतो." },
+          { title: "समर्थनाची गरज", description: "किडनीचे कार्य जसजसे कमी होते, तसतसे रुग्णांना आरोग्य सेवा प्रदाते, कुटुंबातील सदस्य आणि काळजीवाहकांकडून वाढत्या समर्थनाची आवश्यकता असू शकते. यामध्ये आरोग्य व्यावसायिकांकडून घरगुती भेटी, दैनंदिन कामांमध्ये मदत आणि अखेरीस पॅलिएटिव्ह केअर सेवांचा समावेश असू शकतो." },
+        ]
+      }
+    },
+    preferences: {
+      title: "तुमची उपचार प्राधान्ये",
+      intro: "प्रत्येक घटकासाठी तुमची प्राधान्ये दर्शवा. हे तुमचे निकाल वैयक्तिकृत करण्यास मदत करेल.",
+      independence: "स्वातंत्र्य आणि लवचिकता",
+      medicalSupervision: "वैद्यकीय देखरेख",
+      travelAbility: "प्रवासाची क्षमता",
+      dietFlexibility: "आहारातील लवचिकता",
+      selfCareAbility: "स्वतःची काळजी घेण्याची क्षमता",
+      physicalCondition: "शारीरिक स्थिती",
+      hasHerniaOrSurgery: "अलीकडील पोटाची शस्त्रक्रिया किंवा अस्तित्वातील हर्निया",
+      hasVascularAccessIssues: "रक्तवहिन्यासंबंधी प्रवेश समस्या (उदा. एकाधिक अयशस्वी फिस्टुला, खराब नसा)",
+    },
+     results: {
+      title: "तुमचे वैयक्तिकृत निकाल",
+      basedOnPreferences: "तुमच्या प्राधान्यांनुसार, {{treatmentName}} तुमच्या गरजांशी {{matchPercentage}}% जुळते.",
+      hemodialysisDesc: "हा पर्याय नियमित वैद्यकीय देखरेख पुरवतो परंतु डायलिसिस केंद्रात निश्चित वेळापत्रकाची आवश्यकता असते.",
+      peritonealDialysisDesc: "हा पर्याय अधिक लवचिकता देतो परंतु दररोज स्वतःची काळजी घेणे आवश्यक आहे.",
+      conservativeCareDesc: "सक्रिय उपचारांद्वारे आयुष्य वाढवण्याच्या तुमच्या पसंतीशी हा पर्याय कदाचित जुळणार नाही.",
+      nextStepsTitle: "पुढील पायऱ्या",
+      nextStepsIntro: "लक्षात ठेवा, हे टूल सामान्य मार्गदर्शन पुरवते. तुमच्या विशिष्ट परिस्थितीसाठी सर्वोत्तम निर्णय घेण्यासाठी या पर्यायांवर तुमच्या आरोग्य सेवा टीमशी चर्चा करा.",
+      questionsTitle: "तुमच्या डॉक्टरांना विचारण्याचे प्रश्न",
+      questionsItems: [
+        "माझ्या वैद्यकीय स्थितीसाठी कोणता उपचार सर्वोत्तम आहे?",
+        "प्रत्येक पर्यायामध्ये माझ्यासाठी विशिष्ट धोके कोणते आहेत?",
+        "प्रत्येक पर्याय माझ्या दैनंदिन जीवनावर कसा परिणाम करेल?",
+        "प्रत्येक उपचार पर्यायासाठी मला कोणत्या समर्थनाची आवश्यकता असेल?",
+        "कालांतराने माझ्या उपचारांच्या गरजा कशा बदलू शकतात?"
+      ],
+      resourcesTitle: "अतिरिक्त संसाधने",
+      resourcesItems: [
+        "नॅशनल किडनी फाऊंडेशन (किंवा स्थानिक समकक्ष)",
+        "स्थानिक किडनी सहाय्य गट",
+        "डायलिसिस केंद्र शैक्षणिक साहित्य",
+        "किडनी रुग्ण पीअर मार्गदर्शक कार्यक्रम"
+      ],
+      hdKeyFactorHernia: "पोटाच्या शस्त्रक्रियेचा इतिहास असलेल्या रुग्णांसाठी अनेकदा पसंत केले जाते",
+      hdKeyFactorVascular: "खराब रक्तवहिन्यासंबंधी प्रवेशामुळे आव्हानात्मक असू शकते",
+      pdKeyFactorVascular: "रक्तवहिन्यासंबंधी प्रवेश समस्या असलेल्या रुग्णांसाठी अनेकदा पसंत केले जाते",
+      pdKeyFactorHernia: "पोटाच्या शस्त्रक्रियेचा इतिहास असलेल्या रुग्णांसाठी आव्हानात्मक असू शकते",
+      ccKeyFactorConflict: "इतर पर्यायांमध्ये जास्त धोका असल्यास विचार केला जाऊ शकतो"
+    },
+    footer: {
+      copyright: "माझे किडनी केअर चॉइसेस टूल © {{year}}",
+      disclaimer: "हे टूल केवळ शैक्षणिक माहिती पुरवते आणि वैद्यकीय सल्ल्याचा पर्याय नाही."
+    }
+  }
+};
+// --- END OF translations.ts ---
+
+// --- START OF IconComponents.tsx ---
+const StethoscopeIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" }),
+    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 15.75L18 18M8.625 4.5H6.375M8.625 4.5V2.25M15.375 4.5H17.625M15.375 4.5V2.25" })
+  )
+);
+
+const HomeIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M2.25 12l8.954-8.955a.75.75 0 011.06 0l8.955 8.955M1.5 10.5v8.25c0 .83.67 1.5 1.5 1.5h4.5v-5.25c0-.83.67-1.5 1.5-1.5h3c.83 0 1.5.67 1.5 1.5v5.25h4.5c.83 0 1.5-.67 1.5-1.5v-8.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z" })
+  )
+);
+
+const UserCheckIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632zM19.5 13.5L16.5 16.5l-2.25-2.25" })
+  )
+);
+
+const DropletsIcon = (props) => (
+    React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" }),
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 10.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" })
+    )
+);
+
+const AlertTriangleIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" })
+  )
+);
+
+const HeartPulseIcon = (props) => (
+    React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" }),
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M7.5 12h3l1.5-3 1.5 6 1.5-3h3" })
+    )
+);
+
+const ThermometerIcon = (props) => (
+    React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M12 6.75s.75-1.125 1.5-1.125S15 6.75 15 6.75M12 6.75v3.75m0 0H9.375M12 10.5h2.625M12 10.5V18m0 0a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm0 0H7.5M12 18V6.375" }),
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 21H8.25A2.25 2.25 0 016 18.75V5.25A2.25 2.25 0 018.25 3h7.5A2.25 2.25 0 0118 5.25v13.5A2.25 2.25 0 0115.75 21z" })
+    )
+);
+
+const ZapIcon = (props) => (
+    React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" })
+    )
+);
+
+const LungsIcon = (props) => (
+    React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+      React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M8.25 6.75C8.25 5.507 9.257 4.5 10.5 4.5s2.25 1.007 2.25 2.25v2.25H15V6.75C15 5.507 16.007 4.5 17.25 4.5S19.5 5.507 19.5 6.75V9A2.25 2.25 0 0117.25 11.25h-1.5V15c0 1.243-.75 2.393-1.856 2.802A3.001 3.001 0 0112 18.75c-.172 0-.342-.014-.506-.042A2.999 2.999 0 019.643 18H8.25c-1.243 0-2.393-.75-2.802-1.856A3.001 3.001 0 014.5 15.75c0-.172.014-.342.042-.506A2.999 2.999 0 013 14.357V9.75C3 8.507 4.007 7.5 5.25 7.5S7.5 8.507 7.5 9.75v1.5H6.75A2.25 2.25 0 014.5 9V6.75C4.5 5.507 5.507 4.5 6.75 4.5S9 5.507 9 6.75v2.25H8.25V6.75zM12 12.75V18" })
+    )
+);
+// --- END OF IconComponents.tsx ---
+
+// --- START OF constants.ts ---
+const NAV_ITEMS = [
+  { id: Section.BASICS, labelKey: 'nav.basics' },
+  { id: Section.HEALTH_ISSUES, labelKey: 'nav.healthIssues' },
+  { id: Section.TREATMENT_COMPARISON, labelKey: 'nav.treatmentOptions' },
+  { id: Section.COMPLICATIONS, labelKey: 'nav.complications' },
+  { id: Section.YOUR_PREFERENCES, labelKey: 'nav.yourPreferences' },
+  { id: Section.RESULTS, labelKey: 'nav.results' },
+];
+
+const TREATMENT_OPTIONS_DATA = [
+  {
+    id: 'hemodialysis',
+    nameKey: 'understandingTreatments.hemodialysis.name',
+    icon: DropletsIcon,
+    introductionKey: 'understandingTreatments.hemodialysis.introduction',
+    processKey: 'understandingTreatments.hemodialysis.process',
+    prosTitleKey: 'understandingTreatments.hemodialysis.prosTitle',
+    consTitleKey: 'understandingTreatments.hemodialysis.consTitle',
+    prosKeys: [
+      'understandingTreatments.hemodialysis.pros.0',
+      'understandingTreatments.hemodialysis.pros.1',
+      'understandingTreatments.hemodialysis.pros.2',
+      'understandingTreatments.hemodialysis.pros.3',
+      'understandingTreatments.hemodialysis.pros.4',
+      'understandingTreatments.hemodialysis.pros.5',
+    ],
+    consKeys: [
+      'understandingTreatments.hemodialysis.cons.0',
+      'understandingTreatments.hemodialysis.cons.1',
+      'understandingTreatments.hemodialysis.cons.2',
+      'understandingTreatments.hemodialysis.cons.3',
+      'understandingTreatments.hemodialysis.cons.4',
+      'understandingTreatments.hemodialysis.cons.5',
+    ],
+    color: 'blue-600',
+  },
+  {
+    id: 'peritonealDialysis',
+    nameKey: 'understandingTreatments.peritonealDialysis.name',
+    icon: HomeIcon,
+    introductionKey: 'understandingTreatments.peritonealDialysis.introduction',
+    processKey: 'understandingTreatments.peritonealDialysis.process',
+    prosTitleKey: 'understandingTreatments.peritonealDialysis.prosTitle',
+    consTitleKey: 'understandingTreatments.peritonealDialysis.consTitle',
+    prosKeys: [
+      'understandingTreatments.peritonealDialysis.pros.0',
+      'understandingTreatments.peritonealDialysis.pros.1',
+      'understandingTreatments.peritonealDialysis.pros.2',
+      'understandingTreatments.peritonealDialysis.pros.3',
+      'understandingTreatments.peritonealDialysis.pros.4',
+      'understandingTreatments.peritonealDialysis.pros.5',
+    ],
+    consKeys: [
+      'understandingTreatments.peritonealDialysis.cons.0',
+      'understandingTreatments.peritonealDialysis.cons.1',
+      'understandingTreatments.peritonealDialysis.cons.2',
+      'understandingTreatments.peritonealDialysis.cons.3',
+      'understandingTreatments.peritonealDialysis.cons.4',
+      'understandingTreatments.peritonealDialysis.cons.5',
+    ],
+    color: 'orange-500',
+  },
+  {
+    id: 'conservativeCare',
+    nameKey: 'understandingTreatments.conservativeCare.name',
+    icon: UserCheckIcon,
+    introductionKey: 'understandingTreatments.conservativeCare.introduction',
+    processKey: 'understandingTreatments.conservativeCare.process',
+    prosTitleKey: 'understandingTreatments.conservativeCare.prosTitle',
+    consTitleKey: 'understandingTreatments.conservativeCare.consTitle',
+    prosKeys: [
+      'understandingTreatments.conservativeCare.pros.0',
+      'understandingTreatments.conservativeCare.pros.1',
+      'understandingTreatments.conservativeCare.pros.2',
+      'understandingTreatments.conservativeCare.pros.3',
+      'understandingTreatments.conservativeCare.pros.4',
+      'understandingTreatments.conservativeCare.pros.5',
+    ],
+    consKeys: [
+      'understandingTreatments.conservativeCare.cons.0',
+      'understandingTreatments.conservativeCare.cons.1',
+      'understandingTreatments.conservativeCare.cons.2',
+      'understandingTreatments.conservativeCare.cons.3',
+      'understandingTreatments.conservativeCare.cons.4',
+    ],
+    color: 'purple-600',
+  },
+];
+
+const HEALTH_ISSUES_DATA = [
+  {
+    id: 'fluidOverload',
+    nameKey: 'healthIssues.fluidOverload.name',
+    icon: LungsIcon,
+    descriptionKey: 'healthIssues.fluidOverload.description',
+    symptomsKey: 'healthIssues.fluidOverload.symptoms',
+    symptomBgColor: 'bg-blue-100',
+    symptomTextColor: 'text-blue-700',
+    iconBgColor: 'bg-blue-100',
+    iconColor: 'text-blue-500',
+  },
+  {
+    id: 'uremicSymptoms',
+    nameKey: 'healthIssues.uremicSymptoms.name',
+    icon: AlertTriangleIcon,
+    descriptionKey: 'healthIssues.uremicSymptoms.description',
+    symptomsKey: 'healthIssues.uremicSymptoms.symptoms',
+    symptomBgColor: 'bg-yellow-100',
+    symptomTextColor: 'text-yellow-700',
+    iconBgColor: 'bg-yellow-100',
+    iconColor: 'text-yellow-500',
+  },
+  {
+    id: 'excessiveFatigue',
+    nameKey: 'healthIssues.excessiveFatigue.name',
+    icon: ThermometerIcon, // Using Thermometer, could be changed
+    descriptionKey: 'healthIssues.excessiveFatigue.description',
+    symptomsKey: 'healthIssues.excessiveFatigue.symptoms',
+    symptomBgColor: 'bg-red-100',
+    symptomTextColor: 'text-red-700',
+    iconBgColor: 'bg-red-100',
+    iconColor: 'text-red-500',
+  },
+  {
+    id: 'anemia',
+    nameKey: 'healthIssues.anemia.name',
+    icon: DropletsIcon, // Re-using Droplets for Anemia
+    descriptionKey: 'healthIssues.anemia.description',
+    symptomsKey: 'healthIssues.anemia.symptoms',
+    symptomBgColor: 'bg-purple-100',
+    symptomTextColor: 'text-purple-700',
+    iconBgColor: 'bg-purple-100',
+    iconColor: 'text-purple-500',
+  },
+  {
+    id: 'highBloodPressure',
+    nameKey: 'healthIssues.highBloodPressure.name',
+    icon: HeartPulseIcon,
+    descriptionKey: 'healthIssues.highBloodPressure.description',
+    symptomsKey: 'healthIssues.highBloodPressure.symptoms',
+    symptomBgColor: 'bg-green-100',
+    symptomTextColor: 'text-green-700',
+    iconBgColor: 'bg-green-100',
+    iconColor: 'text-green-500',
+  },
+  {
+    id: 'dangerousPotassium',
+    nameKey: 'healthIssues.dangerousPotassium.name',
+    icon: ZapIcon,
+    descriptionKey: 'healthIssues.dangerousPotassium.description',
+    symptomsKey: 'healthIssues.dangerousPotassium.symptoms',
+    symptomBgColor: 'bg-red-100',
+    symptomTextColor: 'text-red-700',
+    iconBgColor: 'bg-red-100',
+    iconColor: 'text-red-500',
+  },
+];
+
+const TREATMENT_COMPARISON_DATA = [
+  { featureKey: 'treatmentComparison.location', hemodialysisKey: 'treatmentComparison.locationHd', peritonealKey: 'treatmentComparison.locationPd', conservativeKey: 'treatmentComparison.locationCc' },
+  { featureKey: 'treatmentComparison.frequency', hemodialysisKey: 'treatmentComparison.frequencyHd', peritonealKey: 'treatmentComparison.frequencyPd', conservativeKey: 'treatmentComparison.frequencyCc' },
+  { featureKey: 'treatmentComparison.duration', hemodialysisKey: 'treatmentComparison.durationHd', peritonealKey: 'treatmentComparison.durationPd', conservativeKey: 'treatmentComparison.durationCc' },
+  { featureKey: 'treatmentComparison.access', hemodialysisKey: 'treatmentComparison.accessHd', peritonealKey: 'treatmentComparison.accessPd', conservativeKey: 'treatmentComparison.accessCc' },
+  { featureKey: 'treatmentComparison.dietRestrictions', hemodialysisKey: 'treatmentComparison.dietHd', peritonealKey: 'treatmentComparison.dietPd', conservativeKey: 'treatmentComparison.dietCc' },
+  { featureKey: 'treatmentComparison.travelFlexibility', hemodialysisKey: 'treatmentComparison.travelHd', peritonealKey: 'treatmentComparison.travelPd', conservativeKey: 'treatmentComparison.travelCc' },
+  { featureKey: 'treatmentComparison.independence', hemodialysisKey: 'treatmentComparison.independenceHd', peritonealKey: 'treatmentComparison.independencePd', conservativeKey: 'treatmentComparison.independenceCc' },
+  { featureKey: 'treatmentComparison.medicalSupport', hemodialysisKey: 'treatmentComparison.medicalHd', peritonealKey: 'treatmentComparison.medicalPd', conservativeKey: 'treatmentComparison.medicalCc' },
+  { featureKey: 'treatmentComparison.lifeExpectancy', hemodialysisKey: 'treatmentComparison.lifeHd', peritonealKey: 'treatmentComparison.lifePd', conservativeKey: 'treatmentComparison.lifeCc' },
+];
+
+const COMPLICATIONS_DATA = [
+  {
+    id: 'hdComplications',
+    treatmentNameKey: 'complications.hd.name',
+    color: 'text-blue-600',
+    complicationItems: [
+      { titleKey: 'complications.hd.items.0.title', descriptionKey: 'complications.hd.items.0.description' },
+      { titleKey: 'complications.hd.items.1.title', descriptionKey: 'complications.hd.items.1.description' },
+      { titleKey: 'complications.hd.items.2.title', descriptionKey: 'complications.hd.items.2.description' },
+      { titleKey: 'complications.hd.items.3.title', descriptionKey: 'complications.hd.items.3.description' },
+    ],
+  },
+  {
+    id: 'pdComplications',
+    treatmentNameKey: 'complications.pd.name',
+    color: 'text-orange-500',
+    complicationItems: [
+      { titleKey: 'complications.pd.items.0.title', descriptionKey: 'complications.pd.items.0.description' },
+      { titleKey: 'complications.pd.items.1.title', descriptionKey: 'complications.pd.items.1.description' },
+      { titleKey: 'complications.pd.items.2.title', descriptionKey: 'complications.pd.items.2.description' },
+      { titleKey: 'complications.pd.items.3.title', descriptionKey: 'complications.pd.items.3.description' },
+    ],
+  },
+  {
+    id: 'ccConsiderations',
+    treatmentNameKey: 'complications.cc.name',
+    color: 'text-purple-600',
+    complicationItems: [
+      { titleKey: 'complications.cc.items.0.title', descriptionKey: 'complications.cc.items.0.description' },
+      { titleKey: 'complications.cc.items.1.title', descriptionKey: 'complications.cc.items.1.description' },
+      { titleKey: 'complications.cc.items.2.title', descriptionKey: 'complications.cc.items.2.description' },
+    ],
+  },
+];
+
+const PREFERENCE_FACTORS = [
+  { id: 'independence', type: 'slider', labelKey: 'preferences.independence', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
+  { id: 'medicalSupervision', type: 'slider', labelKey: 'preferences.medicalSupervision', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
+  { id: 'travelAbility', type: 'slider', labelKey: 'preferences.travelAbility', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
+  { id: 'dietFlexibility', type: 'slider', labelKey: 'preferences.dietFlexibility', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
+  { id: 'selfCareAbility', type: 'slider', labelKey: 'preferences.selfCareAbility', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
+  { id: 'physicalCondition', type: 'slider', labelKey: 'preferences.physicalCondition', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.poor'}, {value: 50, labelKey: 'labels.average'}, {value: 100, labelKey: 'labels.excellent'}] },
+  { 
+    id: 'hasHerniaOrSurgery', 
+    type: 'toggle',
+    labelKey: 'preferences.hasHerniaOrSurgery', 
+    defaultValue: false,
+    toggleLabelsKeys: { true: 'labels.yes', false: 'labels.no' }
+  },
+  { 
+    id: 'hasVascularAccessIssues', 
+    type: 'toggle',
+    labelKey: 'preferences.hasVascularAccessIssues',
+    defaultValue: false,
+    toggleLabelsKeys: { true: 'labels.yes', false: 'labels.no' }
+  },
+];
+// --- END OF constants.ts ---
+
+// --- START OF LanguageContext.tsx ---
+const LanguageContext = createContext(undefined);
+
+const LanguageProvider = ({ children }) => {
+  const [language, setLanguageState] = useState('en'); 
+
+  const setLanguage = (lang) => {
+    setLanguageState(lang);
+  };
+
+  const t = useCallback(
+    (key, params) => {
+      const getTranslationValue = (targetLang, pathKeys) => {
+        let current = targetLang;
+        for (const pKey of pathKeys) {
+          if (current && typeof current === 'object' && pKey in current) {
+            current = current[pKey];
+          } else {
+            return undefined;
+          }
+        }
+        return current;
+      };
+
+      const path = key.split('.');
+      let resolvedItem = getTranslationValue(translations[language], path);
+
+      if (resolvedItem === undefined && language !== 'en') { 
+        resolvedItem = getTranslationValue(translations.en, path);
+      }
+
+      if (params?.returnObjects && Array.isArray(resolvedItem)) {
+        return resolvedItem.map(item => String(item));
+      }
+
+      let textValue = typeof resolvedItem === 'string' ? resolvedItem : key;
+      if (typeof resolvedItem !== 'string') {
+          textValue = key;
+      }
+
+      if (params && typeof textValue === 'string') {
+        Object.keys(params).forEach(paramKey => {
+          if (paramKey !== 'returnObjects') {
+            const regex = new RegExp(`{{${paramKey}}}`, 'g');
+            textValue = textValue.replace(regex, String(params[paramKey]));
+          }
+        });
+      }
+      return textValue; 
+    },
+    [language]
+  );
+
+  return (
+    React.createElement(LanguageContext.Provider, { value: { language, setLanguage, t } },
+      children
+    )
+  );
+};
+// --- END OF LanguageContext.tsx ---
+
+// --- START OF shared/Card.tsx ---
+const Card = ({ children, className = '' }) => {
+  return (
+    React.createElement("div", { className: `bg-white shadow-xl rounded-xl p-6 ${className}` },
+      children
+    )
+  );
+};
+// --- END OF shared/Card.tsx ---
+
+// --- START OF shared/Button.tsx ---
+const Button = ({ 
+  children, 
+  variant = 'primary', 
+  size = 'md', 
+  className = '', 
+  ...props 
+}) => {
+  const baseStyles = 'font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-75 transition-all duration-150 ease-in-out transform active:scale-95';
+  
+  const variantStyles = {
+    primary: 'btn-gradient-primary text-white focus:ring-indigo-500', // Using custom gradient class
+    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-400',
+  };
+
+  const sizeStyles = {
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-2.5 text-base',
+    lg: 'px-8 py-3 text-lg',
+  };
+
+  return (
+    React.createElement("button", {
+      className: `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`,
+      ...props
+    },
+      children
+    )
+  );
+};
+// --- END OF shared/Button.tsx ---
+
+// --- START OF shared/SliderInput.tsx ---
+const SliderInput = ({ factor, value, onChange }) => {
+  const { t } = useContext(LanguageContext);
+
+  const getDynamicLabelForValue = (val) => {
+    let closestLabelKey = factor.labels[0].labelKey;
+    let smallestDiff = Math.abs(val - factor.labels[0].value);
+
+    for (const Nlabel of factor.labels) {
+        const diff = Math.abs(val - Nlabel.value);
+        if (diff < smallestDiff) {
+            smallestDiff = diff;
+            closestLabelKey = Nlabel.labelKey;
+        } else if (diff === smallestDiff && val > Nlabel.value) { 
+             closestLabelKey = Nlabel.labelKey;
+        }
+    }
+    
+    if (factor.labels.length === 3) {
+        if (val < 20) return t(factor.labels[0].labelKey);
+        const slightlyImportantLabel = t('labels.slightlyImportant');
+        if (val < 40) return slightlyImportantLabel !== 'labels.slightlyImportant' ? slightlyImportantLabel : t(factor.labels[0].labelKey);
+        if (val < 60) return t(factor.labels[1].labelKey);
+        const importantLabel = t('labels.important');
+        if (val < 80) return importantLabel !== 'labels.important' ? importantLabel : t(factor.labels[2].labelKey);
+        return t(factor.labels[2].labelKey);
+    }
+    
+    return t(closestLabelKey);
+  };
+  
+  const currentLabel = getDynamicLabelForValue(value);
+  const percentage = value;
+  const trackBackground = `linear-gradient(to right, #4f46e5 ${percentage}%, #e0e7ff ${percentage}%)`; // Indigo gradient fill
+
+  return (
+    React.createElement("div", null,
+      React.createElement("div", { className: "flex justify-between items-center mb-1" },
+        React.createElement("label", { htmlFor: factor.id, className: "block text-md font-medium text-gray-700" },
+          t(factor.labelKey)
+        ),
+        React.createElement("span", { className: "text-sm font-semibold text-indigo-600 min-w-[100px] text-right" }, currentLabel)
+      ),
+      React.createElement("input", {
+        type: "range",
+        id: factor.id,
+        name: factor.id,
+        min: "0",
+        max: "100",
+        step: "1",
+        value: value,
+        onChange: (e) => onChange(parseInt(e.target.value)),
+        className: "w-full h-3 bg-indigo-100 rounded-lg appearance-none cursor-pointer slider-track slider-thumb",
+        style: { background: trackBackground },
+        "aria-valuetext": currentLabel
+      }),
+      React.createElement("div", { className: "flex justify-between text-xs text-gray-500 mt-1 px-1" },
+        factor.labels.map(l => (
+          React.createElement("span", {
+            key: l.value, 
+            style: { 
+              flexBasis: factor.labels.length === 3 ? '33.33%' : 'auto', 
+              textAlign: factor.labels.length === 3 && l.value === 50 ? 'center' : (l.value === 0 ? 'left' : 'right') 
+            }
+          },
+            t(l.labelKey)
+          )
+        ))
+      )
+    )
+  );
+};
+// --- END OF shared/SliderInput.tsx ---
+
+// --- START OF shared/ToggleInput.tsx ---
+const ToggleInput = ({ factor, value, onChange }) => {
+  const { t } = useContext(LanguageContext);
+
+  const handleChange = (e) => {
+    onChange(e.target.checked);
+  };
+
+  return (
+    React.createElement("div", { className: "flex items-center justify-between py-2" },
+      React.createElement("label", { htmlFor: factor.id, className: "block text-md font-medium text-gray-700 mr-4" },
+        t(factor.labelKey)
+      ),
+      React.createElement("div", { className: "flex items-center" },
+        React.createElement("span", { className: `mr-3 text-sm ${!value ? 'text-indigo-600 font-semibold' : 'text-gray-500'}` },
+            t(factor.toggleLabelsKeys.false)
+        ),
+        React.createElement("input", {
+          type: "checkbox",
+          id: factor.id,
+          name: factor.id,
+          checked: value,
+          onChange: handleChange,
+          className: "toggle-checkbox absolute w-0 h-0 opacity-0",
+          "aria-labelledby": `${factor.id}-label`
+        }),
+        React.createElement("label", {
+            htmlFor: factor.id, 
+            className: "toggle-label",
+            "aria-hidden": "true"
+        }),
+        React.createElement("span", { className: `ml-3 text-sm ${value ? 'text-indigo-600 font-semibold' : 'text-gray-500'}` },
+            t(factor.toggleLabelsKeys.true)
+        )
+      )
+    )
+  );
+};
+// --- END OF shared/ToggleInput.tsx ---
+
+// --- START OF shared/CircularProgress.tsx ---
+const CircularProgress = ({
+  percentage,
+  color = 'blue-500', // This will be a tailwind class like 'blue-500' or 'green-500'
+  size = 140,
+  strokeWidth = 12,
+}) => {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+
+  const textClassColor = `text-${color}`; // e.g. text-blue-500
+  const strokeClassColor = `stroke-current text-${color}`; // e.g. stroke-current text-blue-500
+
+  return (
+    React.createElement("div", { className: "relative inline-flex items-center justify-center", style: { width: size, height: size } },
+      React.createElement("svg", { className: "w-full h-full transform -rotate-90", viewBox: `0 0 ${size} ${size}` },
+        React.createElement("circle", {
+          className: "text-gray-300 stroke-current", // Lighter background circle
+          strokeWidth: strokeWidth,
+          fill: "transparent",
+          r: radius,
+          cx: size / 2,
+          cy: size / 2
+        }),
+        React.createElement("circle", {
+          className: `${strokeClassColor} transition-all duration-700 ease-out`,
+          strokeWidth: strokeWidth,
+          strokeDasharray: circumference,
+          strokeDashoffset: offset,
+          strokeLinecap: "round",
+          fill: "transparent",
+          r: radius,
+          cx: size / 2,
+          cy: size / 2
+        })
+      ),
+      React.createElement("span", { className: `absolute text-3xl font-bold ${textClassColor}` },
+        percentage, "%"
+      )
+    )
+  );
+};
+// --- END OF shared/CircularProgress.tsx ---
+
+// --- START OF components/Navbar.tsx ---
+const Navbar = ({ currentSection, onNavigate }) => {
+  const { language, setLanguage, t } = useContext(LanguageContext);
+
+  const languageOptions = [
+    { code: 'en', label: 'English' },
+    { code: 'hi', label: 'हिन्दी' },
+    { code: 'mr', label: 'मराठी' },
+  ];
+
+  return (
+    React.createElement("nav", { className: "fixed top-0 left-0 right-0 bg-white shadow-lg z-50" }, // Enhanced shadow
+      React.createElement("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+        React.createElement("div", { className: "flex items-center justify-between h-16" },
+          React.createElement("div", { className: "flex items-center" },
+            React.createElement(StethoscopeIcon, { className: "h-8 w-8 text-indigo-600" }), // Indigo accent
+            React.createElement("span", { className: "ml-3 font-semibold text-xl text-gray-900" }, t('appName'))
+          ),
+          React.createElement("div", { className: "flex items-center" },
+            React.createElement("div", { className: "hidden md:block" },
+              React.createElement("div", { className: "ml-10 flex items-baseline space-x-1" }, // Reduced space for tighter fit
+                NAV_ITEMS.map((item) => (
+                  React.createElement("button", {
+                    key: item.id,
+                    onClick: () => onNavigate(item.id),
+                    className: `px-3 py-2 rounded-md text-sm font-medium
+                      ${currentSection === item.id 
+                        ? 'bg-indigo-600 text-white shadow-sm' 
+                        : 'text-gray-600 hover:bg-indigo-100 hover:text-indigo-700'
+                      }
+                      transition-colors duration-150 ease-in-out
+                    `}
+                  },
+                    t(item.labelKey)
+                  )
+                ))
+              )
+            ),
+            React.createElement("div", { className: "ml-4 flex items-center" },
+              languageOptions.map(langOpt => (
+                React.createElement("button", {
+                  key: langOpt.code,
+                  onClick: () => setLanguage(langOpt.code),
+                  className: `ml-2 px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-md
+                    ${language === langOpt.code
+                      ? 'bg-indigo-100 text-indigo-700'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                    }
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors
+                  `,
+                  "aria-pressed": language === langOpt.code
+                },
+                  langOpt.label
+                )
+              ))
+            )
+          )
+        )
+      )
+    )
+  );
+};
+// --- END OF components/Navbar.tsx ---
+
+// --- START OF components/WelcomeSection.tsx ---
+const WelcomeSection = ({ onNavigate }) => {
+  const { t } = useContext(LanguageContext);
+  const aboutPoints = t('welcome.aboutPoints', { returnObjects: true });
+
+  return (
+    React.createElement("div", { className: "text-center py-12" },
+      React.createElement("h1", { className: "text-4xl lg:text-5xl font-bold text-gray-900 mb-6" }, t('welcome.title')),
+      React.createElement("p", { className: "text-lg text-gray-600 mb-12 max-w-3xl mx-auto" },
+        t('welcome.intro')
+      ),
+      React.createElement(Card, { className: "max-w-2xl mx-auto text-left p-8" },
+        React.createElement("h2", { className: "text-2xl font-semibold text-gray-800 mb-6 text-center" }, t('welcome.aboutTitle')),
+        React.createElement("p", { className: "text-gray-600 mb-6" },
+          t('welcome.aboutIntro')
+        ),
+        React.createElement("ul", { className: "list-disc list-inside space-y-2 text-gray-600 mb-8 pl-4" },
+          Array.isArray(aboutPoints) && aboutPoints.map((point, index) => (
+            React.createElement("li", { key: index }, point)
+          ))
+        ),
+        React.createElement("p", { className: "text-sm text-gray-500 italic" },
+          t('welcome.note')
+        )
+      ),
+      React.createElement("div", { className: "mt-12" },
+        React.createElement(Button, { onClick: onNavigate, size: "lg" },
+          t('buttons.letsExplore')
+        )
+      )
+    )
+  );
+};
+// --- END OF components/WelcomeSection.tsx ---
+
+// --- START OF components/TreatmentOptionsSection.tsx ---
+const TreatmentInfoCard = ({ treatment }) => {
+  const { t } = useContext(LanguageContext);
+  const IconComponent = treatment.icon;
+  // Determine text color based on treatment.color (e.g., text-blue-600)
+  const textColorClass = `text-${treatment.color}`;
+  // Determine background color for icon (e.g., bg-blue-100)
+  const iconBgClass = `bg-${treatment.color.split('-')[0]}-100`;
+
+  return (
+    React.createElement(Card, { className: "flex flex-col h-full transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
+      React.createElement("div", { className: "p-6 flex-grow" },
+        React.createElement("div", { className: `w-16 h-16 rounded-full ${iconBgClass} flex items-center justify-center mb-4`},
+          React.createElement(IconComponent, { className: `w-8 h-8 ${textColorClass}` })
+        ),
+        React.createElement("h3", { className: `text-2xl font-semibold ${textColorClass} mb-3` }, t(treatment.nameKey)),
+        
+        React.createElement("h4", { className: "font-semibold text-gray-700 mt-4 mb-1" }, t('understandingTreatments.sectionTitleIntro')),
+        React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, t(treatment.introductionKey)),
+        
+        React.createElement("h4", { className: "font-semibold text-gray-700 mt-4 mb-1" }, t('understandingTreatments.sectionTitleProcess')),
+        React.createElement("p", { className: "text-sm text-gray-600 mb-4" }, t(treatment.processKey)),
+
+        React.createElement("div", { className: "mb-4 p-4 bg-green-50 rounded-lg border border-green-200" }, // Added border
+            React.createElement("h5", { className: "font-semibold text-green-700 mb-2" }, t(treatment.prosTitleKey)),
+            React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-green-600" },
+            treatment.prosKeys.map((proKey, index) => React.createElement("li", { key: index }, t(proKey))))
+        ),
+        
+        React.createElement("div", { className: "p-4 bg-red-50 rounded-lg border border-red-200" }, // Added border
+            React.createElement("h5", { className: "font-semibold text-red-700 mb-2" }, t(treatment.consTitleKey)),
+            React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-red-600" },
+            treatment.consKeys.map((conKey, index) => React.createElement("li", { key: index }, t(conKey))))
+        )
+      )
+    )
+  );
+};
+
+const TreatmentOptionsSection = ({ onNavigate }) => {
+  const { t } = useContext(LanguageContext);
+  return (
+    React.createElement("div", { className: "py-12" },
+      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('understandingTreatments.title')),
+      React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
+        t('understandingTreatments.intro')
+      ),
+      React.createElement("div", { className: "grid md:grid-cols-3 gap-8 items-stretch" },
+        TREATMENT_OPTIONS_DATA.map(treatment => (
+          React.createElement(TreatmentInfoCard, { key: treatment.id, treatment: treatment })
+        ))
+      ),
+      React.createElement("div", { className: "text-center mt-12" },
+        React.createElement(Button, { onClick: onNavigate, size: "lg" },
+          t('buttons.continueTo', { section: t('nav.healthIssues')})
+        )
+      )
+    )
+  );
+};
+// --- END OF components/TreatmentOptionsSection.tsx ---
+
+// --- START OF components/HealthIssuesSection.tsx ---
+const HealthIssueCard = ({ issue }) => {
+  const { t } = useContext(LanguageContext);
+  const IconComponent = issue.icon;
+  return (
+    React.createElement(Card, { className: "flex flex-col h-full transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
+      React.createElement("div", { className: "p-6 flex-grow" },
+        React.createElement("div", { className: `w-16 h-16 rounded-full ${issue.iconBgColor} flex items-center justify-center mb-4` },
+          React.createElement(IconComponent, { className: `w-8 h-8 ${issue.iconColor}` })
+        ),
+        React.createElement("h3", { className: `text-xl font-semibold ${issue.symptomTextColor} mb-2` }, t(issue.nameKey)),
+        React.createElement("p", { className: "text-sm text-gray-600 mb-3 flex-grow" }, t(issue.descriptionKey)),
+        React.createElement("div", { className: `p-3 rounded-md ${issue.symptomBgColor}` },
+          React.createElement("p", { className: `text-xs ${issue.symptomTextColor} font-medium` },
+            t('labels.symptomsInclude', {symptoms: t(issue.symptomsKey)})
+          )
+        )
+      )
+    )
+  );
+};
+
+const HealthIssuesSection = ({ onNavigate }) => {
+  const { t } = useContext(LanguageContext);
+  return (
+    React.createElement("div", { className: "py-12" },
+      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('healthIssues.title')),
+      React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-3xl mx-auto" },
+        t('healthIssues.intro')
+      ),
+      React.createElement("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch" },
+        HEALTH_ISSUES_DATA.map(issue => (
+          React.createElement(HealthIssueCard, { key: issue.id, issue: issue })
+        ))
+      ),
+      React.createElement("div", { className: "text-center mt-12" },
+        React.createElement(Button, { onClick: onNavigate, size: "lg" },
+           t('buttons.continueTo', { section: t('nav.treatmentOptions')})
+        )
+      )
+    )
+  );
+};
+// --- END OF components/HealthIssuesSection.tsx ---
+
+// --- START OF components/TreatmentComparisonSection.tsx ---
+const TreatmentComparisonSection = ({ onNavigate }) => {
+  const { t } = useContext(LanguageContext);
+  return (
+    React.createElement("div", { className: "py-12" },
+      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('treatmentComparison.title')),
+      React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
+        t('treatmentComparison.intro')
+      ),
+      React.createElement(Card, { className: "overflow-x-auto transform transition-all duration-300 hover:shadow-2xl" },
+        React.createElement("table", { className: "min-w-full divide-y divide-gray-300" }, // Darker divide
+          React.createElement("thead", { style: { backgroundImage: 'linear-gradient(to right, #4f46e5, #6366f1)' } }, // Gradient header
+            React.createElement("tr", null,
+              React.createElement("th", { scope: "col", className: "px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" },
+                t('treatmentComparison.feature')
+              ),
+              React.createElement("th", { scope: "col", className: "px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" },
+                t('treatmentComparison.hd')
+              ),
+              React.createElement("th", { scope: "col", className: "px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" },
+                t('treatmentComparison.pd')
+              ),
+              React.createElement("th", { scope: "col", className: "px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" },
+                t('treatmentComparison.cc')
+              )
+            )
+          ),
+          React.createElement("tbody", { className: "bg-white divide-y divide-gray-200" },
+            TREATMENT_COMPARISON_DATA.map((item, index) => (
+              React.createElement("tr", { key: index, className: index % 2 === 0 ? 'bg-white' : 'bg-gray-50 hover:bg-gray-100' }, // Hover effect
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" }, t(item.featureKey)),
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-600" }, t(item.hemodialysisKey)),
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-600" }, t(item.peritonealKey)),
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-600" }, t(item.conservativeKey))
+              )
+            ))
+          )
+        )
+      ),
+      React.createElement("div", { className: "text-center mt-12" },
+        React.createElement(Button, { onClick: onNavigate, size: "lg" },
+          t('buttons.continueTo', { section: t('nav.complications')})
+        )
+      )
+    )
+  );
+};
+// --- END OF components/TreatmentComparisonSection.tsx ---
+
+// --- START OF components/ComplicationsSection.tsx ---
+const ComplicationCard = ({ data }) => {
+  const { t } = useContext(LanguageContext);
+  return (
+    React.createElement(Card, { className: "p-6 transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
+      React.createElement("h3", { className: `text-2xl font-semibold ${data.color} mb-4` }, t(data.treatmentNameKey)),
+      data.mainDescriptionKey && React.createElement("p", { className: "text-gray-600 mb-4 text-sm" }, t(data.mainDescriptionKey)),
+      React.createElement("div", { className: "space-y-4" },
+        data.complicationItems.map((item, index) => (
+          React.createElement("div", { key: index, className: "p-4 bg-gray-50 rounded-lg border border-gray-200" }, // Added border
+            React.createElement("h4", { className: "font-semibold text-gray-700 mb-1" }, t(item.titleKey)),
+            React.createElement("p", { className: "text-sm text-gray-600" }, t(item.descriptionKey))
+          )
+        ))
+      )
+    )
+  );
+};
+
+const ComplicationsSection = ({ onNavigate }) => {
+  const { t } = useContext(LanguageContext);
+  return (
+    React.createElement("div", { className: "py-12" },
+      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('complications.title')),
+      React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
+        t('complications.intro')
+      ),
+      React.createElement("div", { className: "grid lg:grid-cols-1 gap-8" }, 
+        COMPLICATIONS_DATA.map(compData => (
+          React.createElement(ComplicationCard, { key: compData.id, data: compData })
+        ))
+      ),
+      React.createElement("div", { className: "text-center mt-12" },
+        React.createElement(Button, { onClick: onNavigate, size: "lg" },
+          t('buttons.continueTo', { section: t('nav.yourPreferences')})
+        )
+      )
+    )
+  );
+};
+// --- END OF components/ComplicationsSection.tsx ---
+
+// --- START OF components/PreferencesSection.tsx ---
+const PreferencesSection = ({ preferences, onPreferencesChange, onNavigate }) => {
+  const { t } = useContext(LanguageContext);
+  
+  const handleChange = (id, value) => {
+    onPreferencesChange({ ...preferences, [id]: value });
+  };
+
+  return (
+    React.createElement("div", { className: "py-12" },
+      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('preferences.title')),
+      React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
+        t('preferences.intro')
+      ),
+      React.createElement(Card, { className: "p-6 md:p-8 transform transition-all duration-300 hover:shadow-2xl" }, // Removed scale on hover for stability
+        React.createElement("div", { className: "space-y-10" },
+          PREFERENCE_FACTORS.map((factor) => {
+            if (factor.type === 'slider') {
+              return (
+                React.createElement(SliderInput, {
+                  key: factor.id,
+                  factor: factor,
+                  value: preferences[factor.id],
+                  onChange: (value) => handleChange(factor.id, value)
+                })
+              );
+            } else if (factor.type === 'toggle') {
+              return (
+                React.createElement(ToggleInput, {
+                  key: factor.id,
+                  factor: factor,
+                  value: preferences[factor.id],
+                  onChange: (value) => handleChange(factor.id, value)
+                })
+              );
+            }
+            return null;
+          })}
+        )
+      ),
+      React.createElement("div", { className: "text-center mt-12" },
+        React.createElement(Button, { onClick: onNavigate, size: "lg" },
+          t('buttons.seeResults')
+        )
+      )
+    )
+  );
+};
+// --- END OF components/PreferencesSection.tsx ---
+
+// --- START OF components/ResultsSection.tsx ---
+const ResultCard = ({ result }) => {
+  const { t } = useContext(LanguageContext);
+  const treatmentData = TREATMENT_OPTIONS_DATA.find(tData => tData.id === result.id);
+  
+  const progressColor = 
+    result.matchPercentage >= 70 ? 'green-500' : // High match - Positive Green
+    result.matchPercentage >= 50 ? 'blue-500'   : // Medium match - Neutral Blue
+    'red-500';                                     // Low match - Concerning Red
+
+  return (
+    React.createElement(Card, { className: "p-6 flex flex-col items-center text-center h-full transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
+      React.createElement("h3", { className: "text-2xl font-semibold text-gray-800 mb-6" }, t(result.nameKey)), // Darker text
+      React.createElement(CircularProgress, { percentage: result.matchPercentage, color: progressColor }),
+      React.createElement("p", { className: "text-sm text-gray-600 mt-6 mb-4 max-w-xs mx-auto" },
+        t('results.basedOnPreferences', { treatmentName: t(result.nameKey).toLowerCase(), matchPercentage: result.matchPercentage.toString() }),
+        ' ',
+        t(result.descriptionKey)
+      ),
+      React.createElement("div", { className: "text-left w-full mt-auto pt-4 border-t border-gray-200" }, // Added border top
+        React.createElement("h4", { className: "font-semibold text-gray-700 mb-2" }, t('labels.keyFactors')),
+        React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-gray-600" },
+          result.keyFactors.map((factorKey, index) => React.createElement("li", { key: index }, t(factorKey)))
+        )
+      )
+    )
+  );
+};
+
+const ResultsSection = ({ results, onStartOver }) => {
+  const { t } = useContext(LanguageContext);
+  const questionsItems = t('results.questionsItems', { returnObjects: true });
+  const resourcesItems = t('results.resourcesItems', { returnObjects: true });
+
+  return (
+    React.createElement("div", { className: "py-12" },
+      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12" }, t('results.title')),
+      React.createElement("div", { className: "grid md:grid-cols-3 gap-8 items-stretch mb-16" }, // Increased bottom margin
+        results.map(res => (
+          React.createElement(ResultCard, { key: res.id, result: res })
+        ))
+      ),
+      React.createElement(Card, { className: "p-6 md:p-8 transform transition-all duration-300 hover:shadow-2xl" }, // Removed scale on hover
+        React.createElement("h3", { className: "text-2xl font-semibold text-gray-800 mb-6 text-center" }, t('results.nextStepsTitle')),
+        React.createElement("p", { className: "text-gray-600 mb-8 text-center max-w-xl mx-auto" }, // Increased bottom margin
+            t('results.nextStepsIntro')
+        ),
+        React.createElement("div", { className: "grid md:grid-cols-2 gap-x-8 gap-y-6" }, // Adjusted gap
+            React.createElement("div", null,
+                React.createElement("h4", { className: "text-lg font-semibold text-indigo-600 mb-3" }, t('results.questionsTitle')),
+                React.createElement("ul", { className: "list-disc list-inside space-y-1.5 text-gray-600 text-sm" }, // Adjusted spacing
+                    Array.isArray(questionsItems) && questionsItems.map((item, index) => (
+                         React.createElement("li", { key: index }, item)
+                    ))
+                )
+            ),
+            React.createElement("div", null,
+                React.createElement("h4", { className: "text-lg font-semibold text-indigo-600 mb-3" }, t('results.resourcesTitle')),
+                React.createElement("ul", { className: "list-disc list-inside space-y-1.5 text-gray-600 text-sm" }, // Adjusted spacing
+                    Array.isArray(resourcesItems) && resourcesItems.map((item, index) => (
+                         React.createElement("li", { key: index }, item)
+                    ))
+                )
+            )
+        )
+      ),
+      React.createElement("div", { className: "text-center mt-12" },
+        React.createElement(Button, { onClick: onStartOver, size: "lg", variant: "secondary" },
+          t('buttons.startOver')
+        )
+      )
+    )
+  );
+};
+// --- END OF components/ResultsSection.tsx ---
+
+// --- START OF App.tsx ---
+const App = () => {
+  const { t } = useContext(LanguageContext);
+  const [currentSection, setCurrentSection] = useState(Section.BASICS);
+  
+  const initialPreferences = useMemo(() => PREFERENCE_FACTORS.reduce((acc, factor) => {
+    acc[factor.id] = factor.defaultValue;
+    return acc;
+  }, {}), []);
+
+  const [preferences, setPreferences] = useState(initialPreferences);
+  const [animationKey, setAnimationKey] = useState(0);
+
+  const navigateTo = useCallback((section) => {
+    setCurrentSection(section);
+    setAnimationKey(prevKey => prevKey + 1); 
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handlePreferencesChange = useCallback((newPreferences) => {
+    setPreferences(newPreferences);
+  }, []);
+
+  const handleStartOver = useCallback(() => {
+    setPreferences(initialPreferences);
+    navigateTo(Section.BASICS);
+  }, [navigateTo, initialPreferences]);
+
+  const calculateResults = useCallback(() => {
+    const treatmentScores = {
+      hemodialysis: 0,
+      peritonealDialysis: 0,
+      conservativeCare: 0,
+    };
+
+    treatmentScores.peritonealDialysis += preferences.independence * 0.3;
+    treatmentScores.conservativeCare += preferences.independence * 0.2;
+    treatmentScores.hemodialysis += (100 - preferences.independence) * 0.2;
+
+    treatmentScores.hemodialysis += preferences.medicalSupervision * 0.35;
+    treatmentScores.peritonealDialysis += (100 - preferences.medicalSupervision) * 0.1;
+    treatmentScores.conservativeCare += (50 - Math.abs(preferences.medicalSupervision - 50)) * 0.05;
+
+    treatmentScores.peritonealDialysis += preferences.travelAbility * 0.25;
+    treatmentScores.conservativeCare += preferences.travelAbility * 0.2;
+    treatmentScores.hemodialysis += (100 - preferences.travelAbility) * 0.15;
+
+    treatmentScores.peritonealDialysis += preferences.dietFlexibility * 0.2;
+    treatmentScores.conservativeCare += preferences.dietFlexibility * 0.15;
+    treatmentScores.hemodialysis += (100 - preferences.dietFlexibility) * 0.1;
+
+    treatmentScores.peritonealDialysis += preferences.selfCareAbility * 0.2;
+    treatmentScores.hemodialysis += (100 - preferences.selfCareAbility) * 0.05;
+    treatmentScores.conservativeCare += preferences.selfCareAbility * 0.1;
+    
+    treatmentScores.peritonealDialysis += (preferences.physicalCondition - 50) * 0.05; 
+    treatmentScores.hemodialysis += (preferences.physicalCondition - 50) * 0.03;
+    if (preferences.physicalCondition < 30) treatmentScores.conservativeCare += 15;
+    else if (preferences.physicalCondition > 70) treatmentScores.conservativeCare -=5;
+
+    const HERNIA_PENALTY_PD = 60; 
+    const HERNIA_BONUS_HD = 30;   
+    const VASCULAR_PENALTY_HD = 60; 
+    const VASCULAR_BONUS_PD = 30;   
+    const CONFLICT_PENALTY_HD_PD = 80; 
+    const CONFLICT_BONUS_CC = 50;     
+
+    if (preferences.hasHerniaOrSurgery && preferences.hasVascularAccessIssues) {
+        treatmentScores.hemodialysis -= CONFLICT_PENALTY_HD_PD;
+        treatmentScores.peritonealDialysis -= CONFLICT_PENALTY_HD_PD;
+        treatmentScores.conservativeCare += CONFLICT_BONUS_CC;
+    } else {
+        if (preferences.hasHerniaOrSurgery) {
+            treatmentScores.peritonealDialysis -= HERNIA_PENALTY_PD;
+            treatmentScores.hemodialysis += HERNIA_BONUS_HD;
+            treatmentScores.conservativeCare += 10; 
+        }
+        if (preferences.hasVascularAccessIssues) {
+            treatmentScores.hemodialysis -= VASCULAR_PENALTY_HD;
+            treatmentScores.peritonealDialysis += VASCULAR_BONUS_PD;
+            treatmentScores.conservativeCare += 10; 
+        }
+    }
+    
+    const allScores = Object.values(treatmentScores);
+    let minScore = Math.min(...allScores);
+    const maxScore = Math.max(...allScores);
+
+    let baselineAdjustment = 0;
+    if (minScore < 0) {
+        baselineAdjustment = Math.abs(minScore);
+        treatmentScores.hemodialysis += baselineAdjustment;
+        treatmentScores.peritonealDialysis += baselineAdjustment;
+        treatmentScores.conservativeCare += baselineAdjustment;
+        minScore += baselineAdjustment; 
+    }
+    
+    let range = (maxScore + baselineAdjustment) - minScore; 
+    if (range === 0) range = 1; 
+
+    const results = TREATMENT_OPTIONS_DATA.map(treatment => {
+        let normalizedScore = treatmentScores[treatment.id] || 0;
+        let percentage = ((normalizedScore - minScore) / range) * 80 + 10; 
+        percentage = Math.max(20, Math.min(95, Math.round(percentage))); 
+        
+        const baseKeyFactors = treatment.id === 'hemodialysis' ? [
+            'understandingTreatments.hemodialysis.pros.0', 
+            'understandingTreatments.hemodialysis.cons.0', 
+            'understandingTreatments.hemodialysis.pros.1', 
+            'understandingTreatments.hemodialysis.cons.3', 
+        ] : treatment.id === 'peritonealDialysis' ? [
+            'understandingTreatments.peritonealDialysis.pros.0', 
+            'understandingTreatments.peritonealDialysis.pros.1', 
+            'understandingTreatments.peritonealDialysis.cons.0', 
+            'understandingTreatments.peritonealDialysis.cons.5', 
+        ] : [ 
+            'understandingTreatments.conservativeCare.cons.1', 
+            'understandingTreatments.conservativeCare.cons.0', 
+            'understandingTreatments.conservativeCare.cons.2', 
+            'understandingTreatments.conservativeCare.cons.3', 
+        ];
+
+        const dynamicKeyFactors = [];
+        if (treatment.id === 'hemodialysis') {
+            if (preferences.hasHerniaOrSurgery && !preferences.hasVascularAccessIssues) {
+                dynamicKeyFactors.push('results.hdKeyFactorHernia');
+            }
+            if (preferences.hasVascularAccessIssues) {
+                dynamicKeyFactors.push('results.hdKeyFactorVascular');
+            }
+        } else if (treatment.id === 'peritonealDialysis') {
+            if (preferences.hasVascularAccessIssues && !preferences.hasHerniaOrSurgery) {
+                dynamicKeyFactors.push('results.pdKeyFactorVascular');
+            }
+            if (preferences.hasHerniaOrSurgery) {
+                dynamicKeyFactors.push('results.pdKeyFactorHernia');
+            }
+        } else if (treatment.id === 'conservativeCare') {
+             if (preferences.hasHerniaOrSurgery && preferences.hasVascularAccessIssues) {
+                dynamicKeyFactors.push('results.ccKeyFactorConflict');
+            }
+        }
+
+        return {
+            id: treatment.id,
+            nameKey: treatment.nameKey,
+            matchPercentage: percentage,
+            keyFactors: [...baseKeyFactors, ...dynamicKeyFactors],
+            descriptionKey: treatment.id === 'hemodialysis' ? 'results.hemodialysisDesc' :
+                            treatment.id === 'peritonealDialysis' ? 'results.peritonealDialysisDesc' :
+                            'results.conservativeCareDesc'
+        };
+    });
+    return results.sort((a,b) => b.matchPercentage - a.matchPercentage);
+  }, [preferences]); 
+
+  const results = useMemo(() => calculateResults(), [calculateResults]);
+  
+  const renderSection = () => {
+    switch (currentSection) {
+      case Section.BASICS:
+        return React.createElement(WelcomeSection, { onNavigate: () => navigateTo(Section.UNDERSTANDING_TREATMENTS) });
+      case Section.UNDERSTANDING_TREATMENTS:
+        return React.createElement(TreatmentOptionsSection, { onNavigate: () => navigateTo(Section.HEALTH_ISSUES) });
+      case Section.HEALTH_ISSUES:
+        return React.createElement(HealthIssuesSection, { onNavigate: () => navigateTo(Section.TREATMENT_COMPARISON) });
+      case Section.TREATMENT_COMPARISON:
+        return React.createElement(TreatmentComparisonSection, { onNavigate: () => navigateTo(Section.COMPLICATIONS) });
+      case Section.COMPLICATIONS:
+        return React.createElement(ComplicationsSection, { onNavigate: () => navigateTo(Section.YOUR_PREFERENCES) });
+      case Section.YOUR_PREFERENCES:
+        return React.createElement(PreferencesSection, { preferences: preferences, onPreferencesChange: handlePreferencesChange, onNavigate: () => navigateTo(Section.RESULTS) });
+      case Section.RESULTS:
+        return React.createElement(ResultsSection, { results: results, onStartOver: handleStartOver });
+      default:
+        return React.createElement(WelcomeSection, { onNavigate: () => navigateTo(Section.UNDERSTANDING_TREATMENTS) });
+    }
+  };
+
+  return (
+    React.createElement("div", { className: "min-h-screen" }, // Removed bg color, handled by body style
+      React.createElement(Navbar, { currentSection: currentSection, onNavigate: navigateTo }),
+      React.createElement("main", { className: "pt-20 pb-12 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto" },
+        React.createElement("div", { key: animationKey, className: "section-content" },
+          renderSection()
+        )
+      ),
+      React.createElement("footer", { className: "text-center py-8 bg-slate-200 text-sm text-gray-600 border-t border-slate-300" },
+        React.createElement("p", null, t('footer.copyright', { year: new Date().getFullYear().toString() })),
+        React.createElement("p", { className: "mt-1" }, t('footer.disclaimer'))
+      )
+    )
+  );
+};
+// --- END OF App.tsx ---
+
+// --- ReactDOM Render (from index.tsx) ---
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Could not find root element to mount to");
+}
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  React.createElement(React.StrictMode, null,
+    React.createElement(LanguageProvider, null,
+      React.createElement(App, null)
+    )
+  )
+);
+
+    </script>
+</body>
+</html>
