@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,20 +7,20 @@
     <title>My Kidney Care Choices Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { 
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; 
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
             scroll-behavior: smooth;
             background: linear-gradient(135deg, #f3f4f6 0%, #e9ebee 100%); /* New background gradient */
             color: #374151; /* Default text color - text-gray-700 */
         }
-        .section-content { 
-            animation: fadeInAnimation 0.6s ease-in-out; 
+        .section-content {
+            animation: fadeInAnimation 0.6s ease-in-out;
         }
-        @keyframes fadeInAnimation { 
-            from { opacity: 0; transform: translateY(15px); } 
-            to { opacity: 1; transform: translateY(0); } 
+        @keyframes fadeInAnimation {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
+
         /* Toggle Switch Styles */
         .toggle-checkbox:focus-visible + .toggle-label { /* Use focus-visible for better accessibility */
             outline: 2px solid #3b82f6; /* focus ring for accessibility - blue-500 */
@@ -74,7 +75,7 @@
             background-color: #3b82f6; /* Tailwind blue-500 */
             border-radius: 9999px; /* rounded-full */
             cursor: pointer;
-            margin-top: -4px; 
+            margin-top: -4px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             transition: transform 0.1s ease-in-out;
         }
@@ -100,14 +101,14 @@
             transform: scale(1.1);
         }
         .slider-thumb:focus-visible::-moz-range-thumb { /* Use focus-visible */
-            outline: 2px solid #3b82f6; 
+            outline: 2px solid #3b82f6;
             outline-offset: 1px;
         }
         .slider-thumb::-moz-range-track {
-             background: transparent; 
+             background: transparent;
              border: none;
         }
-        
+
         /* Gradient Button Base */
         .btn-gradient-primary {
             background-image: linear-gradient(to right, #4f46e5, #6366f1); /* Indigo gradient */
@@ -639,7 +640,7 @@ const translations = {
         name: "पेरिटोनियल डायलिसिस (पीडी) जटिलताएँ",
         items: [
           { title: "संक्रमण", description: "पेरिटोनियल डायलिसिस के साथ संक्रमण सबसे आम समस्या है। पेरिटोनाइटिस पेट (बेली) में एक संक्रमण है जो गंभीर हो सकता है। यह संक्रमण तब होता है जब संक्रमण पेट के भीतर पेरिटोनियल स्थान में प्रवेश करता है। अन्य समस्याओं में हर्निया, खराब जल निकासी, निकास स्थल का संक्रमण और कैथेटर से रिसाव शामिल हैं। ये समस्याएं पेरिटोनियल डायलिसिस को काम करने से रोक सकती हैं।" },
-          { title: "खराब जल निकासी और रिसाव", description: "खराब जल निकासी एक से अधिक कारणों से हो सकती है। यह इसलिए हो सकता है porque फाइब्रिन (एक प्रोटीन) नामक पदार्थ पीडी कैथेटर को अवरुद्ध करता है। आमतौर पर ट्यूब को निचोड़कर या नर्स द्वारा दवाएं इंजेक्ट करवाकर साफ किया जा सकता है।" },
+          { title: "खराब जल निकासी और रिसाव", description: "खराब जल निकासी एक से अधिक कारणों से हो सकती है। यह इसलिए हो सकता है क्योंकि फाइब्रिन (एक प्रोटीन) नामक पदार्थ पीडी कैथेटर को अवरुद्ध करता है। आमतौर पर ट्यूब को निचोड़कर या नर्स द्वारा दवाएं इंजेक्ट करवाकर साफ किया जा सकता है।" },
           { title: "हर्निया", description: "हर्निया आमतौर पर पेट में एक दृश्य गांठ होती है। यह तब हो सकता है जब शरीर का कोई आंतरिक भाग, जैसे कोई अंग, उस स्थान की दीवार से बाहर निकल जाता है जहाँ वह स्थित होता है। पेरिटोनियल गुहा में बढ़ा हुआ दबाव पेट की मांसपेशियों की कमजोरी का कारण बन सकता है और हर्निया होने की अधिक संभावना बना सकता है। हर्निया में अक्सर कोई लक्षण नहीं होते हैं और केवल तब दर्द होता है जब लोग भारी वस्तु उठाते हैं, झुकते हैं, या खांसते हैं। हर्निया को ठीक करने के लिए आमतौर पर सर्जरी की आवश्यकता होती है।" },
           { title: "अन्य जटिलताएँ", description: "डायलिसिस द्रव से ग्लूकोज अवशोषण के कारण वजन बढ़ना, कैथेटर और पेट में तरल पदार्थ के कारण शरीर की छवि में परिवर्तन, डायलिसिस द्रव में प्रोटीन की हानि, समय के साथ पेरिटोनियल झिल्ली में परिवर्तन, पीठ दर्द।" },
         ]
@@ -1247,15 +1248,15 @@ const PREFERENCE_FACTORS = [
   { id: 'dietFlexibility', type: 'slider', labelKey: 'preferences.dietFlexibility', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
   { id: 'selfCareAbility', type: 'slider', labelKey: 'preferences.selfCareAbility', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.notImportant'}, {value: 50, labelKey: 'labels.neutral'}, {value: 100, labelKey: 'labels.veryImportant'}] },
   { id: 'physicalCondition', type: 'slider', labelKey: 'preferences.physicalCondition', defaultValue: 50, labels: [{value: 0, labelKey: 'labels.poor'}, {value: 50, labelKey: 'labels.average'}, {value: 100, labelKey: 'labels.excellent'}] },
-  { 
-    id: 'hasHerniaOrSurgery', 
+  {
+    id: 'hasHerniaOrSurgery',
     type: 'toggle',
-    labelKey: 'preferences.hasHerniaOrSurgery', 
+    labelKey: 'preferences.hasHerniaOrSurgery',
     defaultValue: false,
     toggleLabelsKeys: { true: 'labels.yes', false: 'labels.no' }
   },
-  { 
-    id: 'hasVascularAccessIssues', 
+  {
+    id: 'hasVascularAccessIssues',
     type: 'toggle',
     labelKey: 'preferences.hasVascularAccessIssues',
     defaultValue: false,
@@ -1268,7 +1269,7 @@ const PREFERENCE_FACTORS = [
 const LanguageContext = createContext(undefined);
 
 const LanguageProvider = ({ children }) => {
-  const [language, setLanguageState] = useState('en'); 
+  const [language, setLanguageState] = useState('en');
 
   const setLanguage = (lang) => {
     setLanguageState(lang);
@@ -1291,7 +1292,7 @@ const LanguageProvider = ({ children }) => {
       const path = key.split('.');
       let resolvedItem = getTranslationValue(translations[language], path);
 
-      if (resolvedItem === undefined && language !== 'en') { 
+      if (resolvedItem === undefined && language !== 'en') {
         resolvedItem = getTranslationValue(translations.en, path);
       }
 
@@ -1312,7 +1313,7 @@ const LanguageProvider = ({ children }) => {
           }
         });
       }
-      return textValue; 
+      return textValue;
     },
     [language]
   );
@@ -1336,15 +1337,15 @@ const Card = ({ children, className = '' }) => {
 // --- END OF shared/Card.tsx ---
 
 // --- START OF shared/Button.tsx ---
-const Button = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
-  className = '', 
-  ...props 
+const Button = ({
+  children,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  ...props
 }) => {
   const baseStyles = 'font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-75 transition-all duration-150 ease-in-out transform active:scale-95';
-  
+
   const variantStyles = {
     primary: 'btn-gradient-primary text-white focus:ring-indigo-500', // Using custom gradient class
     secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-400',
@@ -1380,11 +1381,11 @@ const SliderInput = ({ factor, value, onChange }) => {
         if (diff < smallestDiff) {
             smallestDiff = diff;
             closestLabelKey = Nlabel.labelKey;
-        } else if (diff === smallestDiff && val > Nlabel.value) { 
+        } else if (diff === smallestDiff && val > Nlabel.value) {
              closestLabelKey = Nlabel.labelKey;
         }
     }
-    
+
     if (factor.labels.length === 3) {
         if (val < 20) return t(factor.labels[0].labelKey);
         const slightlyImportantLabel = t('labels.slightlyImportant');
@@ -1394,10 +1395,10 @@ const SliderInput = ({ factor, value, onChange }) => {
         if (val < 80) return importantLabel !== 'labels.important' ? importantLabel : t(factor.labels[2].labelKey);
         return t(factor.labels[2].labelKey);
     }
-    
+
     return t(closestLabelKey);
   };
-  
+
   const currentLabel = getDynamicLabelForValue(value);
   const percentage = value;
   const trackBackground = `linear-gradient(to right, #4f46e5 ${percentage}%, #e0e7ff ${percentage}%)`; // Indigo gradient fill
@@ -1426,10 +1427,10 @@ const SliderInput = ({ factor, value, onChange }) => {
       React.createElement("div", { className: "flex justify-between text-xs text-gray-500 mt-1 px-1" },
         factor.labels.map(l => (
           React.createElement("span", {
-            key: l.value, 
-            style: { 
-              flexBasis: factor.labels.length === 3 ? '33.33%' : 'auto', 
-              textAlign: factor.labels.length === 3 && l.value === 50 ? 'center' : (l.value === 0 ? 'left' : 'right') 
+            key: l.value,
+            style: {
+              flexBasis: factor.labels.length === 3 ? '33.33%' : 'auto',
+              textAlign: factor.labels.length === 3 && l.value === 50 ? 'center' : (l.value === 0 ? 'left' : 'right')
             }
           },
             t(l.labelKey)
@@ -1468,7 +1469,7 @@ const ToggleInput = ({ factor, value, onChange }) => {
           "aria-labelledby": `${factor.id}-label`
         }),
         React.createElement("label", {
-            htmlFor: factor.id, 
+            htmlFor: factor.id,
             className: "toggle-label",
             "aria-hidden": "true"
         }),
@@ -1552,8 +1553,8 @@ const Navbar = ({ currentSection, onNavigate }) => {
                     key: item.id,
                     onClick: () => onNavigate(item.id),
                     className: `px-3 py-2 rounded-md text-sm font-medium
-                      ${currentSection === item.id 
-                        ? 'bg-indigo-600 text-white shadow-sm' 
+                      ${currentSection === item.id
+                        ? 'bg-indigo-600 text-white shadow-sm'
                         : 'text-gray-600 hover:bg-indigo-100 hover:text-indigo-700'
                       }
                       transition-colors duration-150 ease-in-out
@@ -1602,18 +1603,20 @@ const WelcomeSection = ({ onNavigate }) => {
         t('welcome.intro')
       ),
       React.createElement(Card, { className: "max-w-2xl mx-auto text-left p-8" },
-        React.createElement("h2", { className: "text-2xl font-semibold text-gray-800 mb-6 text-center" }, t('welcome.aboutTitle')),
-        React.createElement("p", { className: "text-gray-600 mb-6" },
-          t('welcome.aboutIntro')
-        ),
-        React.createElement("ul", { className: "list-disc list-inside space-y-2 text-gray-600 mb-8 pl-4" },
-          Array.isArray(aboutPoints) && aboutPoints.map((point, index) => (
-            React.createElement("li", { key: index }, point)
-          ))
-        ),
-        React.createElement("p", { className: "text-sm text-gray-500 italic" },
-          t('welcome.note')
-        )
+        [ // Children of Card now wrapped in an array
+            React.createElement("h2", { key: "aboutTitle", className: "text-2xl font-semibold text-gray-800 mb-6 text-center" }, t('welcome.aboutTitle')),
+            React.createElement("p", { key: "aboutIntro", className: "text-gray-600 mb-6" },
+              t('welcome.aboutIntro')
+            ),
+            React.createElement("ul", { key: "aboutPointsList", className: "list-disc list-inside space-y-2 text-gray-600 mb-8 pl-4" },
+              Array.isArray(aboutPoints) && aboutPoints.map((point, index) => (
+                React.createElement("li", { key: index }, point)
+              ))
+            ),
+            React.createElement("p", { key: "aboutNote", className: "text-sm text-gray-500 italic" },
+              t('welcome.note')
+            )
+        ]
       ),
       React.createElement("div", { className: "mt-12" },
         React.createElement(Button, { onClick: onNavigate, size: "lg" },
@@ -1641,10 +1644,10 @@ const TreatmentInfoCard = ({ treatment }) => {
           React.createElement(IconComponent, { className: `w-8 h-8 ${textColorClass}` })
         ),
         React.createElement("h3", { className: `text-2xl font-semibold ${textColorClass} mb-3` }, t(treatment.nameKey)),
-        
+
         React.createElement("h4", { className: "font-semibold text-gray-700 mt-4 mb-1" }, t('understandingTreatments.sectionTitleIntro')),
         React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, t(treatment.introductionKey)),
-        
+
         React.createElement("h4", { className: "font-semibold text-gray-700 mt-4 mb-1" }, t('understandingTreatments.sectionTitleProcess')),
         React.createElement("p", { className: "text-sm text-gray-600 mb-4" }, t(treatment.processKey)),
 
@@ -1653,7 +1656,7 @@ const TreatmentInfoCard = ({ treatment }) => {
             React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-green-600" },
             treatment.prosKeys.map((proKey, index) => React.createElement("li", { key: index }, t(proKey))))
         ),
-        
+
         React.createElement("div", { className: "p-4 bg-red-50 rounded-lg border border-red-200" }, // Added border
             React.createElement("h5", { className: "font-semibold text-red-700 mb-2" }, t(treatment.consTitleKey)),
             React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-red-600" },
@@ -1808,7 +1811,7 @@ const ComplicationsSection = ({ onNavigate }) => {
       React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
         t('complications.intro')
       ),
-      React.createElement("div", { className: "grid lg:grid-cols-1 gap-8" }, 
+      React.createElement("div", { className: "grid lg:grid-cols-1 gap-8" },
         COMPLICATIONS_DATA.map(compData => (
           React.createElement(ComplicationCard, { key: compData.id, data: compData })
         ))
@@ -1826,7 +1829,7 @@ const ComplicationsSection = ({ onNavigate }) => {
 // --- START OF components/PreferencesSection.tsx ---
 const PreferencesSection = ({ preferences, onPreferencesChange, onNavigate }) => {
   const { t } = useContext(LanguageContext);
-  
+
   const handleChange = (id, value) => {
     onPreferencesChange({ ...preferences, [id]: value });
   };
@@ -1877,8 +1880,8 @@ const PreferencesSection = ({ preferences, onPreferencesChange, onNavigate }) =>
 const ResultCard = ({ result }) => {
   const { t } = useContext(LanguageContext);
   const treatmentData = TREATMENT_OPTIONS_DATA.find(tData => tData.id === result.id);
-  
-  const progressColor = 
+
+  const progressColor =
     result.matchPercentage >= 70 ? 'green-500' : // High match - Positive Green
     result.matchPercentage >= 50 ? 'blue-500'   : // Medium match - Neutral Blue
     'red-500';                                     // Low match - Concerning Red
@@ -1953,7 +1956,7 @@ const ResultsSection = ({ results, onStartOver }) => {
 const App = () => {
   const { t } = useContext(LanguageContext);
   const [currentSection, setCurrentSection] = useState(Section.BASICS);
-  
+
   const initialPreferences = useMemo(() => PREFERENCE_FACTORS.reduce((acc, factor) => {
     acc[factor.id] = factor.defaultValue;
     return acc;
@@ -1964,7 +1967,7 @@ const App = () => {
 
   const navigateTo = useCallback((section) => {
     setCurrentSection(section);
-    setAnimationKey(prevKey => prevKey + 1); 
+    setAnimationKey(prevKey => prevKey + 1);
     window.scrollTo(0, 0);
   }, []);
 
@@ -2003,18 +2006,18 @@ const App = () => {
     treatmentScores.peritonealDialysis += preferences.selfCareAbility * 0.2;
     treatmentScores.hemodialysis += (100 - preferences.selfCareAbility) * 0.05;
     treatmentScores.conservativeCare += preferences.selfCareAbility * 0.1;
-    
-    treatmentScores.peritonealDialysis += (preferences.physicalCondition - 50) * 0.05; 
+
+    treatmentScores.peritonealDialysis += (preferences.physicalCondition - 50) * 0.05;
     treatmentScores.hemodialysis += (preferences.physicalCondition - 50) * 0.03;
     if (preferences.physicalCondition < 30) treatmentScores.conservativeCare += 15;
     else if (preferences.physicalCondition > 70) treatmentScores.conservativeCare -=5;
 
-    const HERNIA_PENALTY_PD = 60; 
-    const HERNIA_BONUS_HD = 30;   
-    const VASCULAR_PENALTY_HD = 60; 
-    const VASCULAR_BONUS_PD = 30;   
-    const CONFLICT_PENALTY_HD_PD = 80; 
-    const CONFLICT_BONUS_CC = 50;     
+    const HERNIA_PENALTY_PD = 60;
+    const HERNIA_BONUS_HD = 30;
+    const VASCULAR_PENALTY_HD = 60;
+    const VASCULAR_BONUS_PD = 30;
+    const CONFLICT_PENALTY_HD_PD = 80;
+    const CONFLICT_BONUS_CC = 50;
 
     if (preferences.hasHerniaOrSurgery && preferences.hasVascularAccessIssues) {
         treatmentScores.hemodialysis -= CONFLICT_PENALTY_HD_PD;
@@ -2024,15 +2027,15 @@ const App = () => {
         if (preferences.hasHerniaOrSurgery) {
             treatmentScores.peritonealDialysis -= HERNIA_PENALTY_PD;
             treatmentScores.hemodialysis += HERNIA_BONUS_HD;
-            treatmentScores.conservativeCare += 10; 
+            treatmentScores.conservativeCare += 10;
         }
         if (preferences.hasVascularAccessIssues) {
             treatmentScores.hemodialysis -= VASCULAR_PENALTY_HD;
             treatmentScores.peritonealDialysis += VASCULAR_BONUS_PD;
-            treatmentScores.conservativeCare += 10; 
+            treatmentScores.conservativeCare += 10;
         }
     }
-    
+
     const allScores = Object.values(treatmentScores);
     let minScore = Math.min(...allScores);
     const maxScore = Math.max(...allScores);
@@ -2043,32 +2046,32 @@ const App = () => {
         treatmentScores.hemodialysis += baselineAdjustment;
         treatmentScores.peritonealDialysis += baselineAdjustment;
         treatmentScores.conservativeCare += baselineAdjustment;
-        minScore += baselineAdjustment; 
+        minScore += baselineAdjustment;
     }
-    
-    let range = (maxScore + baselineAdjustment) - minScore; 
-    if (range === 0) range = 1; 
+
+    let range = (maxScore + baselineAdjustment) - minScore;
+    if (range === 0) range = 1;
 
     const results = TREATMENT_OPTIONS_DATA.map(treatment => {
         let normalizedScore = treatmentScores[treatment.id] || 0;
-        let percentage = ((normalizedScore - minScore) / range) * 80 + 10; 
-        percentage = Math.max(20, Math.min(95, Math.round(percentage))); 
-        
+        let percentage = ((normalizedScore - minScore) / range) * 80 + 10;
+        percentage = Math.max(20, Math.min(95, Math.round(percentage)));
+
         const baseKeyFactors = treatment.id === 'hemodialysis' ? [
-            'understandingTreatments.hemodialysis.pros.0', 
-            'understandingTreatments.hemodialysis.cons.0', 
-            'understandingTreatments.hemodialysis.pros.1', 
-            'understandingTreatments.hemodialysis.cons.3', 
+            'understandingTreatments.hemodialysis.pros.0',
+            'understandingTreatments.hemodialysis.cons.0',
+            'understandingTreatments.hemodialysis.pros.1',
+            'understandingTreatments.hemodialysis.cons.3',
         ] : treatment.id === 'peritonealDialysis' ? [
-            'understandingTreatments.peritonealDialysis.pros.0', 
-            'understandingTreatments.peritonealDialysis.pros.1', 
-            'understandingTreatments.peritonealDialysis.cons.0', 
-            'understandingTreatments.peritonealDialysis.cons.5', 
-        ] : [ 
-            'understandingTreatments.conservativeCare.cons.1', 
-            'understandingTreatments.conservativeCare.cons.0', 
-            'understandingTreatments.conservativeCare.cons.2', 
-            'understandingTreatments.conservativeCare.cons.3', 
+            'understandingTreatments.peritonealDialysis.pros.0',
+            'understandingTreatments.peritonealDialysis.pros.1',
+            'understandingTreatments.peritonealDialysis.cons.0',
+            'understandingTreatments.peritonealDialysis.cons.5',
+        ] : [
+            'understandingTreatments.conservativeCare.cons.1',
+            'understandingTreatments.conservativeCare.cons.0',
+            'understandingTreatments.conservativeCare.cons.2',
+            'understandingTreatments.conservativeCare.cons.3',
         ];
 
         const dynamicKeyFactors = [];
@@ -2080,7 +2083,7 @@ const App = () => {
                 dynamicKeyFactors.push('results.hdKeyFactorVascular');
             }
         } else if (treatment.id === 'peritonealDialysis') {
-            if (preferences.hasVascularAccessIssues && !preferences.hasHerniaOrSurgery) {
+             if (preferences.hasVascularAccessIssues && !preferences.hasHerniaOrSurgery) {
                 dynamicKeyFactors.push('results.pdKeyFactorVascular');
             }
             if (preferences.hasHerniaOrSurgery) {
@@ -2103,10 +2106,10 @@ const App = () => {
         };
     });
     return results.sort((a,b) => b.matchPercentage - a.matchPercentage);
-  }, [preferences]); 
+  }, [preferences]);
 
   const results = useMemo(() => calculateResults(), [calculateResults]);
-  
+
   const renderSection = () => {
     switch (currentSection) {
       case Section.BASICS:
