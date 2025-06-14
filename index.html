@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,7 +137,7 @@
 <body class="text-gray-800">
     <div id="root"></div>
     <script type="module">
-import React, { useState, useCallback, useMemo, useContext, createContext, ReactNode } from 'react';
+import React, { useState, useCallback, useMemo, useContext, createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // --- START OF types.ts ---
@@ -203,8 +202,8 @@ const translations = {
     understandingTreatments: {
       title: "Understanding Treatment Options",
       intro: "Learn about the primary treatment approaches for kidney failure. Each option has unique benefits and considerations.",
-      sectionTitleIntro: "Introduction", // Generic key for "Introduction"
-      sectionTitleProcess: "Process", // Generic key for "Process"
+      sectionTitleIntro: "Introduction", 
+      sectionTitleProcess: "Process", 
       hemodialysis: {
         name: "Hemodialysis",
         introduction: "Hemodialysis is a treatment that filters waste and excess fluid from your blood using a machine with a special filter called a dialyzer (artificial kidney). This treatment is typically performed at a dialysis center.",
@@ -978,59 +977,86 @@ const translations = {
 // --- START OF IconComponents.tsx ---
 const StethoscopeIcon = (props) => (
   React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" }),
-    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 15.75L18 18M8.625 4.5H6.375M8.625 4.5V2.25M15.375 4.5H17.625M15.375 4.5V2.25" })
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" }),
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15.75 15.75L18 18M8.625 4.5H6.375M8.625 4.5V2.25M15.375 4.5H17.625M15.375 4.5V2.25" })
   )
 );
 
 const HomeIcon = (props) => (
   React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M2.25 12l8.954-8.955a.75.75 0 011.06 0l8.955 8.955M1.5 10.5v8.25c0 .83.67 1.5 1.5 1.5h4.5v-5.25c0-.83.67-1.5 1.5-1.5h3c.83 0 1.5.67 1.5 1.5v5.25h4.5c.83 0 1.5-.67 1.5-1.5v-8.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z" })
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M2.25 12l8.954-8.955a.75.75 0 011.06 0l8.955 8.955M1.5 10.5v8.25c0 .83.67 1.5 1.5 1.5h4.5v-5.25c0-.83.67-1.5 1.5-1.5h3c.83 0 1.5.67 1.5 1.5v5.25h4.5c.83 0 1.5-.67 1.5-1.5v-8.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z" })
   )
 );
 
 const UserCheckIcon = (props) => (
   React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632zM19.5 13.5L16.5 16.5l-2.25-2.25" })
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632zM19.5 13.5L16.5 16.5l-2.25-2.25" })
   )
 );
 
 const DropletsIcon = (props) => (
     React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" }),
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 10.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" })
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" }),
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15.75 10.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" })
     )
+);
+
+const ActivityIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M3.75 12h3.75m1.5 0h3.75m1.5 0h3.75m-16.5 3.75h3.75m1.5 0h3.75m1.5 0h3.75M3.75 8.25h3.75m1.5 0h3.75m1.5 0h3.75M3 3v18h18" })
+  )
 );
 
 const AlertTriangleIcon = (props) => (
   React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-    React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" })
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" })
   )
 );
 
 const HeartPulseIcon = (props) => (
     React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" }),
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M7.5 12h3l1.5-3 1.5 6 1.5-3h3" })
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" }),
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M7.5 12h3l1.5-3 1.5 6 1.5-3h3" })
     )
+);
+
+const ShieldAlertIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" }),
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 18.75a.75.75 0 00.75-.75V12a.75.75 0 00-1.5 0v6a.75.75 0 00.75.75zM12 7.5a.75.75 0 01.146-.486l.003-.005A.75.75 0 0112.75 6H12a.75.75 0 01-.75-.75V5.25a.75.75 0 01.75-.75h.001a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H12a.75.75 0 01-.75.75v.001H12a.75.75 0 01.75-.75h.007a.75.75 0 01.75.75V7.5a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75v-.008a.75.75 0 01.75-.75h.001" })
+  )
 );
 
 const ThermometerIcon = (props) => (
     React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M12 6.75s.75-1.125 1.5-1.125S15 6.75 15 6.75M12 6.75v3.75m0 0H9.375M12 10.5h2.625M12 10.5V18m0 0a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm0 0H7.5M12 18V6.375" }),
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M15.75 21H8.25A2.25 2.25 0 016 18.75V5.25A2.25 2.25 0 018.25 3h7.5A2.25 2.25 0 0118 5.25v13.5A2.25 2.25 0 0115.75 21z" })
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 6.75s.75-1.125 1.5-1.125S15 6.75 15 6.75M12 6.75v3.75m0 0H9.375M12 10.5h2.625M12 10.5V18m0 0a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm0 0H7.5M12 18V6.375" }),
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15.75 21H8.25A2.25 2.25 0 016 18.75V5.25A2.25 2.25 0 018.25 3h7.5A2.25 2.25 0 0118 5.25v13.5A2.25 2.25 0 0115.75 21z" })
     )
 );
 
 const ZapIcon = (props) => (
     React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-        React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" })
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" })
     )
 );
 
 const LungsIcon = (props) => (
     React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
-      React.createElement("path", { strokeLineCap: "round", strokeLinejoin: "round", d: "M8.25 6.75C8.25 5.507 9.257 4.5 10.5 4.5s2.25 1.007 2.25 2.25v2.25H15V6.75C15 5.507 16.007 4.5 17.25 4.5S19.5 5.507 19.5 6.75V9A2.25 2.25 0 0117.25 11.25h-1.5V15c0 1.243-.75 2.393-1.856 2.802A3.001 3.001 0 0112 18.75c-.172 0-.342-.014-.506-.042A2.999 2.999 0 019.643 18H8.25c-1.243 0-2.393-.75-2.802-1.856A3.001 3.001 0 014.5 15.75c0-.172.014-.342.042-.506A2.999 2.999 0 013 14.357V9.75C3 8.507 4.007 7.5 5.25 7.5S7.5 8.507 7.5 9.75v1.5H6.75A2.25 2.25 0 014.5 9V6.75C4.5 5.507 5.507 4.5 6.75 4.5S9 5.507 9 6.75v2.25H8.25V6.75zM12 12.75V18" })
+      React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M8.25 6.75C8.25 5.507 9.257 4.5 10.5 4.5s2.25 1.007 2.25 2.25v2.25H15V6.75C15 5.507 16.007 4.5 17.25 4.5S19.5 5.507 19.5 6.75V9A2.25 2.25 0 0117.25 11.25h-1.5V15c0 1.243-.75 2.393-1.856 2.802A3.001 3.001 0 0112 18.75c-.172 0-.342-.014-.506-.042A2.999 2.999 0 019.643 18H8.25c-1.243 0-2.393-.75-2.802-1.856A3.001 3.001 0 014.5 15.75c0-.172.014-.342.042-.506A2.999 2.999 0 013 14.357V9.75C3 8.507 4.007 7.5 5.25 7.5S7.5 8.507 7.5 9.75v1.5H6.75A2.25 2.25 0 014.5 9V6.75C4.5 5.507 5.507 4.5 6.75 4.5S9 5.507 9 6.75v2.25H8.25V6.75zM12 12.75V18" })
+    )
+);
+
+const BrainIcon = (props) => (
+  React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L16 6.75l-2.25 5.25L8.25 12l5.25 2.25L16 19.5l2.25-5.25L21.75 12h-3.5z"})
+  )
+);
+
+const BoneIcon = (props) => (
+    React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", ...props },
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12.75 4.5C12.75 3.03 11.52 1.8 10 .8S7.25 0 5.75 0C3.35 0 1.5 1.852 1.5 4.25S3.35 8.5 5.75 8.5h.75C8.04 8.5 9.5 7.04 9.5 5.5S8.04 2.5 6.5 2.5h-1", transform: "translate(3.5 7.5)" }),
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12.75 4.5C12.75 3.03 11.52 1.8 10 .8S7.25 0 5.75 0C3.35 0 1.5 1.852 1.5 4.25S3.35 8.5 5.75 8.5h.75C8.04 8.5 9.5 7.04 9.5 5.5S8.04 2.5 6.5 2.5h-1", transform: "translate(3.5 7.5) rotate(180 7.125 4.25)" }),
+        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M0 0H7.5", transform: "translate(8.25 11.75)" })
     )
 );
 // --- END OF IconComponents.tsx ---
@@ -1151,7 +1177,7 @@ const HEALTH_ISSUES_DATA = [
   {
     id: 'excessiveFatigue',
     nameKey: 'healthIssues.excessiveFatigue.name',
-    icon: ThermometerIcon, // Using Thermometer, could be changed
+    icon: ThermometerIcon,
     descriptionKey: 'healthIssues.excessiveFatigue.description',
     symptomsKey: 'healthIssues.excessiveFatigue.symptoms',
     symptomBgColor: 'bg-red-100',
@@ -1162,7 +1188,7 @@ const HEALTH_ISSUES_DATA = [
   {
     id: 'anemia',
     nameKey: 'healthIssues.anemia.name',
-    icon: DropletsIcon, // Re-using Droplets for Anemia
+    icon: DropletsIcon, // Re-using DropletsIcon as specific icon for anemia was not defined.
     descriptionKey: 'healthIssues.anemia.description',
     symptomsKey: 'healthIssues.anemia.symptoms',
     symptomBgColor: 'bg-purple-100',
@@ -1269,7 +1295,7 @@ const PREFERENCE_FACTORS = [
 const LanguageContext = createContext(undefined);
 
 const LanguageProvider = ({ children }) => {
-  const [language, setLanguageState] = useState('en');
+  const [language, setLanguageState] = useState('en'); 
 
   const setLanguage = (lang) => {
     setLanguageState(lang);
@@ -1292,7 +1318,7 @@ const LanguageProvider = ({ children }) => {
       const path = key.split('.');
       let resolvedItem = getTranslationValue(translations[language], path);
 
-      if (resolvedItem === undefined && language !== 'en') {
+      if (resolvedItem === undefined && language !== 'en') { 
         resolvedItem = getTranslationValue(translations.en, path);
       }
 
@@ -1301,19 +1327,21 @@ const LanguageProvider = ({ children }) => {
       }
 
       let textValue = typeof resolvedItem === 'string' ? resolvedItem : key;
+
       if (typeof resolvedItem !== 'string') {
           textValue = key;
       }
 
       if (params && typeof textValue === 'string') {
         Object.keys(params).forEach(paramKey => {
-          if (paramKey !== 'returnObjects') {
+          if (paramKey !== 'returnObjects') { 
             const regex = new RegExp(`{{${paramKey}}}`, 'g');
             textValue = textValue.replace(regex, String(params[paramKey]));
           }
         });
       }
-      return textValue;
+      
+      return textValue; 
     },
     [language]
   );
@@ -1326,7 +1354,8 @@ const LanguageProvider = ({ children }) => {
 };
 // --- END OF LanguageContext.tsx ---
 
-// --- START OF shared/Card.tsx ---
+
+// --- START OF components/shared/Card.tsx ---
 const Card = ({ children, className = '' }) => {
   return (
     React.createElement("div", { className: `bg-white shadow-xl rounded-xl p-6 ${className}` },
@@ -1334,21 +1363,21 @@ const Card = ({ children, className = '' }) => {
     )
   );
 };
-// --- END OF shared/Card.tsx ---
+// --- END OF components/shared/Card.tsx ---
 
-// --- START OF shared/Button.tsx ---
-const Button = ({
-  children,
-  variant = 'primary',
-  size = 'md',
-  className = '',
-  ...props
+// --- START OF components/shared/Button.tsx ---
+const Button = ({ 
+  children, 
+  variant = 'primary', 
+  size = 'md', 
+  className = '', 
+  ...props 
 }) => {
-  const baseStyles = 'font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-75 transition-all duration-150 ease-in-out transform active:scale-95';
-
+  const baseStyles = 'font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-75 transition-all duration-150 ease-in-out';
+  
   const variantStyles = {
-    primary: 'btn-gradient-primary text-white focus:ring-indigo-500', // Using custom gradient class
-    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-400',
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
+    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-700 focus:ring-gray-400',
   };
 
   const sizeStyles = {
@@ -1366,9 +1395,9 @@ const Button = ({
     )
   );
 };
-// --- END OF shared/Button.tsx ---
+// --- END OF components/shared/Button.tsx ---
 
-// --- START OF shared/SliderInput.tsx ---
+// --- START OF components/shared/SliderInput.tsx ---
 const SliderInput = ({ factor, value, onChange }) => {
   const { t } = useContext(LanguageContext);
 
@@ -1381,27 +1410,25 @@ const SliderInput = ({ factor, value, onChange }) => {
         if (diff < smallestDiff) {
             smallestDiff = diff;
             closestLabelKey = Nlabel.labelKey;
-        } else if (diff === smallestDiff && val > Nlabel.value) {
-             closestLabelKey = Nlabel.labelKey;
+        } else if (diff === smallestDiff && val > Nlabel.value) { 
+             closestLabelKey = Nlabel.labelKey; 
         }
     }
-
-    if (factor.labels.length === 3) {
+    
+    if (factor.labels.length === 3) { 
         if (val < 20) return t(factor.labels[0].labelKey);
-        const slightlyImportantLabel = t('labels.slightlyImportant');
-        if (val < 40) return slightlyImportantLabel !== 'labels.slightlyImportant' ? slightlyImportantLabel : t(factor.labels[0].labelKey);
+        if (val < 40) return t('labels.slightlyImportant') !== 'labels.slightlyImportant' ? t('labels.slightlyImportant') : t(factor.labels[0].labelKey); 
         if (val < 60) return t(factor.labels[1].labelKey);
-        const importantLabel = t('labels.important');
-        if (val < 80) return importantLabel !== 'labels.important' ? importantLabel : t(factor.labels[2].labelKey);
+        if (val < 80) return t('labels.important') !== 'labels.important' ? t('labels.important') : t(factor.labels[2].labelKey); 
         return t(factor.labels[2].labelKey);
     }
-
+    
     return t(closestLabelKey);
   };
-
+  
   const currentLabel = getDynamicLabelForValue(value);
   const percentage = value;
-  const trackBackground = `linear-gradient(to right, #4f46e5 ${percentage}%, #e0e7ff ${percentage}%)`; // Indigo gradient fill
+  const trackBackground = `linear-gradient(to right, #2563EB ${percentage}%, #E5E7EB ${percentage}%)`;
 
   return (
     React.createElement("div", null,
@@ -1409,7 +1436,7 @@ const SliderInput = ({ factor, value, onChange }) => {
         React.createElement("label", { htmlFor: factor.id, className: "block text-md font-medium text-gray-700" },
           t(factor.labelKey)
         ),
-        React.createElement("span", { className: "text-sm font-semibold text-indigo-600 min-w-[100px] text-right" }, currentLabel)
+        React.createElement("span", { className: "text-sm font-semibold text-blue-600 min-w-[100px] text-right" }, currentLabel)
       ),
       React.createElement("input", {
         type: "range",
@@ -1420,17 +1447,17 @@ const SliderInput = ({ factor, value, onChange }) => {
         step: "1",
         value: value,
         onChange: (e) => onChange(parseInt(e.target.value)),
-        className: "w-full h-3 bg-indigo-100 rounded-lg appearance-none cursor-pointer slider-track slider-thumb",
+        className: "w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-track slider-thumb",
         style: { background: trackBackground },
         "aria-valuetext": currentLabel
       }),
       React.createElement("div", { className: "flex justify-between text-xs text-gray-500 mt-1 px-1" },
         factor.labels.map(l => (
-          React.createElement("span", {
-            key: l.value,
-            style: {
-              flexBasis: factor.labels.length === 3 ? '33.33%' : 'auto',
-              textAlign: factor.labels.length === 3 && l.value === 50 ? 'center' : (l.value === 0 ? 'left' : 'right')
+          React.createElement("span", { 
+            key: l.value, 
+            style: { 
+              flexBasis: factor.labels.length === 3 ? '33.33%' : 'auto', 
+              textAlign: factor.labels.length === 3 && l.value === 50 ? 'center' : (l.value === 0 ? 'left' : 'right') 
             }
           },
             t(l.labelKey)
@@ -1440,9 +1467,9 @@ const SliderInput = ({ factor, value, onChange }) => {
     )
   );
 };
-// --- END OF shared/SliderInput.tsx ---
+// --- END OF components/shared/SliderInput.tsx ---
 
-// --- START OF shared/ToggleInput.tsx ---
+// --- START OF components/shared/ToggleInput.tsx ---
 const ToggleInput = ({ factor, value, onChange }) => {
   const { t } = useContext(LanguageContext);
 
@@ -1456,7 +1483,7 @@ const ToggleInput = ({ factor, value, onChange }) => {
         t(factor.labelKey)
       ),
       React.createElement("div", { className: "flex items-center" },
-        React.createElement("span", { className: `mr-3 text-sm ${!value ? 'text-indigo-600 font-semibold' : 'text-gray-500'}` },
+        React.createElement("span", { className: `mr-3 text-sm ${!value ? 'text-blue-600 font-semibold' : 'text-gray-500'}` },
             t(factor.toggleLabelsKeys.false)
         ),
         React.createElement("input", {
@@ -1468,24 +1495,24 @@ const ToggleInput = ({ factor, value, onChange }) => {
           className: "toggle-checkbox absolute w-0 h-0 opacity-0",
           "aria-labelledby": `${factor.id}-label`
         }),
-        React.createElement("label", {
-            htmlFor: factor.id,
+        React.createElement("label", { 
+            htmlFor: factor.id, 
             className: "toggle-label",
             "aria-hidden": "true"
         }),
-        React.createElement("span", { className: `ml-3 text-sm ${value ? 'text-indigo-600 font-semibold' : 'text-gray-500'}` },
+        React.createElement("span", { className: `ml-3 text-sm ${value ? 'text-blue-600 font-semibold' : 'text-gray-500'}` },
             t(factor.toggleLabelsKeys.true)
         )
       )
     )
   );
 };
-// --- END OF shared/ToggleInput.tsx ---
+// --- END OF components/shared/ToggleInput.tsx ---
 
-// --- START OF shared/CircularProgress.tsx ---
+// --- START OF components/shared/CircularProgress.tsx ---
 const CircularProgress = ({
   percentage,
-  color = 'blue-500', // This will be a tailwind class like 'blue-500' or 'green-500'
+  color = 'blue-500',
   size = 140,
   strokeWidth = 12,
 }) => {
@@ -1493,14 +1520,14 @@ const CircularProgress = ({
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
-  const textClassColor = `text-${color}`; // e.g. text-blue-500
-  const strokeClassColor = `stroke-current text-${color}`; // e.g. stroke-current text-blue-500
+  const textClassColor = `text-${color}`;
+  const strokeClassColor = `stroke-current text-${color}`;
 
   return (
     React.createElement("div", { className: "relative inline-flex items-center justify-center", style: { width: size, height: size } },
       React.createElement("svg", { className: "w-full h-full transform -rotate-90", viewBox: `0 0 ${size} ${size}` },
         React.createElement("circle", {
-          className: "text-gray-300 stroke-current", // Lighter background circle
+          className: "text-gray-200 stroke-current",
           strokeWidth: strokeWidth,
           fill: "transparent",
           r: radius,
@@ -1508,7 +1535,7 @@ const CircularProgress = ({
           cy: size / 2
         }),
         React.createElement("circle", {
-          className: `${strokeClassColor} transition-all duration-700 ease-out`,
+          className: `${strokeClassColor} transition-all duration-500 ease-out`,
           strokeWidth: strokeWidth,
           strokeDasharray: circumference,
           strokeDashoffset: offset,
@@ -1520,12 +1547,13 @@ const CircularProgress = ({
         })
       ),
       React.createElement("span", { className: `absolute text-3xl font-bold ${textClassColor}` },
-        percentage, "%"
+        `${percentage}%`
       )
     )
   );
 };
-// --- END OF shared/CircularProgress.tsx ---
+// --- END OF components/shared/CircularProgress.tsx ---
+
 
 // --- START OF components/Navbar.tsx ---
 const Navbar = ({ currentSection, onNavigate }) => {
@@ -1538,27 +1566,26 @@ const Navbar = ({ currentSection, onNavigate }) => {
   ];
 
   return (
-    React.createElement("nav", { className: "fixed top-0 left-0 right-0 bg-white shadow-lg z-50" }, // Enhanced shadow
+    React.createElement("nav", { className: "fixed top-0 left-0 right-0 bg-white shadow-md z-50" },
       React.createElement("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
         React.createElement("div", { className: "flex items-center justify-between h-16" },
           React.createElement("div", { className: "flex items-center" },
-            React.createElement(StethoscopeIcon, { className: "h-8 w-8 text-indigo-600" }), // Indigo accent
-            React.createElement("span", { className: "ml-3 font-semibold text-xl text-gray-900" }, t('appName'))
+            React.createElement(StethoscopeIcon, { className: "h-8 w-8 text-blue-600" }),
+            React.createElement("span", { className: "ml-3 font-semibold text-xl text-gray-800" }, t('appName'))
           ),
           React.createElement("div", { className: "flex items-center" },
             React.createElement("div", { className: "hidden md:block" },
-              React.createElement("div", { className: "ml-10 flex items-baseline space-x-1" }, // Reduced space for tighter fit
+              React.createElement("div", { className: "ml-10 flex items-baseline space-x-4" },
                 NAV_ITEMS.map((item) => (
                   React.createElement("button", {
                     key: item.id,
                     onClick: () => onNavigate(item.id),
                     className: `px-3 py-2 rounded-md text-sm font-medium
-                      ${currentSection === item.id
-                        ? 'bg-indigo-600 text-white shadow-sm'
-                        : 'text-gray-600 hover:bg-indigo-100 hover:text-indigo-700'
+                      ${currentSection === item.id 
+                        ? 'bg-blue-600 text-white' 
+                        : 'text-gray-600 hover:bg-blue-100 hover:text-blue-700'
                       }
-                      transition-colors duration-150 ease-in-out
-                    `}
+                      transition-colors duration-150 ease-in-out`
                   },
                     t(item.labelKey)
                   )
@@ -1570,13 +1597,12 @@ const Navbar = ({ currentSection, onNavigate }) => {
                 React.createElement("button", {
                   key: langOpt.code,
                   onClick: () => setLanguage(langOpt.code),
-                  className: `ml-2 px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-md
+                  className: `ml-2 px-2 py-1 border border-transparent text-sm font-medium rounded-md
                     ${language === langOpt.code
-                      ? 'bg-indigo-100 text-indigo-700'
+                      ? 'bg-blue-100 text-blue-700'
                       : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                     }
-                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors
-                  `,
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`,
                   "aria-pressed": language === langOpt.code
                 },
                   langOpt.label
@@ -1598,25 +1624,25 @@ const WelcomeSection = ({ onNavigate }) => {
 
   return (
     React.createElement("div", { className: "text-center py-12" },
-      React.createElement("h1", { className: "text-4xl lg:text-5xl font-bold text-gray-900 mb-6" }, t('welcome.title')),
+      React.createElement("h1", { className: "text-4xl font-bold text-gray-800 mb-6" }, t('welcome.title')),
       React.createElement("p", { className: "text-lg text-gray-600 mb-12 max-w-3xl mx-auto" },
         t('welcome.intro')
       ),
       React.createElement(Card, { className: "max-w-2xl mx-auto text-left p-8" },
-        [ // Children of Card now wrapped in an array
-            React.createElement("h2", { key: "aboutTitle", className: "text-2xl font-semibold text-gray-800 mb-6 text-center" }, t('welcome.aboutTitle')),
-            React.createElement("p", { key: "aboutIntro", className: "text-gray-600 mb-6" },
-              t('welcome.aboutIntro')
-            ),
-            React.createElement("ul", { key: "aboutPointsList", className: "list-disc list-inside space-y-2 text-gray-600 mb-8 pl-4" },
-              Array.isArray(aboutPoints) && aboutPoints.map((point, index) => (
+        React.createElement("h2", { className: "text-2xl font-semibold text-gray-700 mb-6 text-center" }, t('welcome.aboutTitle')),
+        React.createElement("p", { className: "text-gray-600 mb-6" },
+          t('welcome.aboutIntro')
+        ),
+        React.createElement("ul", { className: "list-disc list-inside space-y-2 text-gray-600 mb-8 pl-4" },
+          Array.isArray(aboutPoints) 
+            ? aboutPoints.map((point, index) => (
                 React.createElement("li", { key: index }, point)
               ))
-            ),
-            React.createElement("p", { key: "aboutNote", className: "text-sm text-gray-500 italic" },
-              t('welcome.note')
-            )
-        ]
+            : null
+        ),
+        React.createElement("p", { className: "text-sm text-gray-500 italic" },
+          t('welcome.note')
+        )
       ),
       React.createElement("div", { className: "mt-12" },
         React.createElement(Button, { onClick: onNavigate, size: "lg" },
@@ -1632,32 +1658,23 @@ const WelcomeSection = ({ onNavigate }) => {
 const TreatmentInfoCard = ({ treatment }) => {
   const { t } = useContext(LanguageContext);
   const IconComponent = treatment.icon;
-  // Determine text color based on treatment.color (e.g., text-blue-600)
-  const textColorClass = `text-${treatment.color}`;
-  // Determine background color for icon (e.g., bg-blue-100)
-  const iconBgClass = `bg-${treatment.color.split('-')[0]}-100`;
-
   return (
     React.createElement(Card, { className: "flex flex-col h-full transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
       React.createElement("div", { className: "p-6 flex-grow" },
-        React.createElement("div", { className: `w-16 h-16 rounded-full ${iconBgClass} flex items-center justify-center mb-4`},
-          React.createElement(IconComponent, { className: `w-8 h-8 ${textColorClass}` })
+        React.createElement("div", { className: `w-16 h-16 rounded-full bg-${treatment.color.split('-')[0]}-100 flex items-center justify-center mb-4` },
+          React.createElement(IconComponent, { className: `w-8 h-8 text-${treatment.color}` })
         ),
-        React.createElement("h3", { className: `text-2xl font-semibold ${textColorClass} mb-3` }, t(treatment.nameKey)),
-
+        React.createElement("h3", { className: `text-2xl font-semibold text-${treatment.color} mb-3` }, t(treatment.nameKey)),
         React.createElement("h4", { className: "font-semibold text-gray-700 mt-4 mb-1" }, t('understandingTreatments.sectionTitleIntro')),
         React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, t(treatment.introductionKey)),
-
         React.createElement("h4", { className: "font-semibold text-gray-700 mt-4 mb-1" }, t('understandingTreatments.sectionTitleProcess')),
         React.createElement("p", { className: "text-sm text-gray-600 mb-4" }, t(treatment.processKey)),
-
-        React.createElement("div", { className: "mb-4 p-4 bg-green-50 rounded-lg border border-green-200" }, // Added border
+        React.createElement("div", { className: "mb-4 p-3 bg-green-50 rounded-md" },
             React.createElement("h5", { className: "font-semibold text-green-700 mb-2" }, t(treatment.prosTitleKey)),
             React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-green-600" },
             treatment.prosKeys.map((proKey, index) => React.createElement("li", { key: index }, t(proKey))))
         ),
-
-        React.createElement("div", { className: "p-4 bg-red-50 rounded-lg border border-red-200" }, // Added border
+        React.createElement("div", { className: "p-3 bg-red-50 rounded-md" },
             React.createElement("h5", { className: "font-semibold text-red-700 mb-2" }, t(treatment.consTitleKey)),
             React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-red-600" },
             treatment.consKeys.map((conKey, index) => React.createElement("li", { key: index }, t(conKey))))
@@ -1671,7 +1688,7 @@ const TreatmentOptionsSection = ({ onNavigate }) => {
   const { t } = useContext(LanguageContext);
   return (
     React.createElement("div", { className: "py-12" },
-      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('understandingTreatments.title')),
+      React.createElement("h2", { className: "text-3xl font-bold text-gray-800 text-center mb-4" }, t('understandingTreatments.title')),
       React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
         t('understandingTreatments.intro')
       ),
@@ -1716,7 +1733,7 @@ const HealthIssuesSection = ({ onNavigate }) => {
   const { t } = useContext(LanguageContext);
   return (
     React.createElement("div", { className: "py-12" },
-      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('healthIssues.title')),
+      React.createElement("h2", { className: "text-3xl font-bold text-gray-800 text-center mb-4" }, t('healthIssues.title')),
       React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-3xl mx-auto" },
         t('healthIssues.intro')
       ),
@@ -1740,13 +1757,13 @@ const TreatmentComparisonSection = ({ onNavigate }) => {
   const { t } = useContext(LanguageContext);
   return (
     React.createElement("div", { className: "py-12" },
-      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('treatmentComparison.title')),
+      React.createElement("h2", { className: "text-3xl font-bold text-gray-800 text-center mb-4" }, t('treatmentComparison.title')),
       React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
         t('treatmentComparison.intro')
       ),
       React.createElement(Card, { className: "overflow-x-auto transform transition-all duration-300 hover:shadow-2xl" },
-        React.createElement("table", { className: "min-w-full divide-y divide-gray-300" }, // Darker divide
-          React.createElement("thead", { style: { backgroundImage: 'linear-gradient(to right, #4f46e5, #6366f1)' } }, // Gradient header
+        React.createElement("table", { className: "min-w-full divide-y divide-gray-200" },
+          React.createElement("thead", { className: "bg-blue-600" },
             React.createElement("tr", null,
               React.createElement("th", { scope: "col", className: "px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" },
                 t('treatmentComparison.feature')
@@ -1764,11 +1781,11 @@ const TreatmentComparisonSection = ({ onNavigate }) => {
           ),
           React.createElement("tbody", { className: "bg-white divide-y divide-gray-200" },
             TREATMENT_COMPARISON_DATA.map((item, index) => (
-              React.createElement("tr", { key: index, className: index % 2 === 0 ? 'bg-white' : 'bg-gray-50 hover:bg-gray-100' }, // Hover effect
-                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" }, t(item.featureKey)),
-                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-600" }, t(item.hemodialysisKey)),
-                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-600" }, t(item.peritonealKey)),
-                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-600" }, t(item.conservativeKey))
+              React.createElement("tr", { key: index, className: index % 2 === 0 ? 'bg-white' : 'bg-gray-50' },
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" }, t(item.featureKey)),
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-500" }, t(item.hemodialysisKey)),
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-500" }, t(item.peritonealKey)),
+                React.createElement("td", { className: "px-6 py-4 whitespace-nowrap text-sm text-gray-500" }, t(item.conservativeKey))
               )
             ))
           )
@@ -1793,7 +1810,7 @@ const ComplicationCard = ({ data }) => {
       data.mainDescriptionKey && React.createElement("p", { className: "text-gray-600 mb-4 text-sm" }, t(data.mainDescriptionKey)),
       React.createElement("div", { className: "space-y-4" },
         data.complicationItems.map((item, index) => (
-          React.createElement("div", { key: index, className: "p-4 bg-gray-50 rounded-lg border border-gray-200" }, // Added border
+          React.createElement("div", { key: index, className: "p-4 bg-gray-50 rounded-lg" },
             React.createElement("h4", { className: "font-semibold text-gray-700 mb-1" }, t(item.titleKey)),
             React.createElement("p", { className: "text-sm text-gray-600" }, t(item.descriptionKey))
           )
@@ -1807,11 +1824,11 @@ const ComplicationsSection = ({ onNavigate }) => {
   const { t } = useContext(LanguageContext);
   return (
     React.createElement("div", { className: "py-12" },
-      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('complications.title')),
+      React.createElement("h2", { className: "text-3xl font-bold text-gray-800 text-center mb-4" }, t('complications.title')),
       React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
         t('complications.intro')
       ),
-      React.createElement("div", { className: "grid lg:grid-cols-1 gap-8" },
+      React.createElement("div", { className: "grid lg:grid-cols-1 gap-8" }, 
         COMPLICATIONS_DATA.map(compData => (
           React.createElement(ComplicationCard, { key: compData.id, data: compData })
         ))
@@ -1829,18 +1846,18 @@ const ComplicationsSection = ({ onNavigate }) => {
 // --- START OF components/PreferencesSection.tsx ---
 const PreferencesSection = ({ preferences, onPreferencesChange, onNavigate }) => {
   const { t } = useContext(LanguageContext);
-
+  
   const handleChange = (id, value) => {
     onPreferencesChange({ ...preferences, [id]: value });
   };
 
   return (
     React.createElement("div", { className: "py-12" },
-      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4" }, t('preferences.title')),
+      React.createElement("h2", { className: "text-3xl font-bold text-gray-800 text-center mb-4" }, t('preferences.title')),
       React.createElement("p", { className: "text-center text-gray-600 mb-12 max-w-2xl mx-auto" },
         t('preferences.intro')
       ),
-      React.createElement(Card, { className: "p-6 md:p-8 transform transition-all duration-300 hover:shadow-2xl" }, // Removed scale on hover for stability
+      React.createElement(Card, { className: "p-6 md:p-8 transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
         React.createElement("div", { className: "space-y-10" },
           PREFERENCE_FACTORS.map((factor) => {
             if (factor.type === 'slider') {
@@ -1863,7 +1880,7 @@ const PreferencesSection = ({ preferences, onPreferencesChange, onNavigate }) =>
               );
             }
             return null;
-          })}
+          })
         )
       ),
       React.createElement("div", { className: "text-center mt-12" },
@@ -1880,22 +1897,21 @@ const PreferencesSection = ({ preferences, onPreferencesChange, onNavigate }) =>
 const ResultCard = ({ result }) => {
   const { t } = useContext(LanguageContext);
   const treatmentData = TREATMENT_OPTIONS_DATA.find(tData => tData.id === result.id);
-
-  const progressColor =
-    result.matchPercentage >= 70 ? 'green-500' : // High match - Positive Green
-    result.matchPercentage >= 50 ? 'blue-500'   : // Medium match - Neutral Blue
-    'red-500';                                     // Low match - Concerning Red
+  const progressColor = 
+    result.matchPercentage >= 70 ? 'orange-500' : 
+    result.matchPercentage >= 50 ? 'blue-500'   : 
+    'red-500';                                     
 
   return (
     React.createElement(Card, { className: "p-6 flex flex-col items-center text-center h-full transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
-      React.createElement("h3", { className: "text-2xl font-semibold text-gray-800 mb-6" }, t(result.nameKey)), // Darker text
+      React.createElement("h3", { className: `text-2xl font-semibold text-gray-700 mb-6` }, t(result.nameKey)),
       React.createElement(CircularProgress, { percentage: result.matchPercentage, color: progressColor }),
       React.createElement("p", { className: "text-sm text-gray-600 mt-6 mb-4 max-w-xs mx-auto" },
         t('results.basedOnPreferences', { treatmentName: t(result.nameKey).toLowerCase(), matchPercentage: result.matchPercentage.toString() }),
         ' ',
         t(result.descriptionKey)
       ),
-      React.createElement("div", { className: "text-left w-full mt-auto pt-4 border-t border-gray-200" }, // Added border top
+      React.createElement("div", { className: "text-left w-full mt-auto" },
         React.createElement("h4", { className: "font-semibold text-gray-700 mb-2" }, t('labels.keyFactors')),
         React.createElement("ul", { className: "list-disc list-inside space-y-1 text-sm text-gray-600" },
           result.keyFactors.map((factorKey, index) => React.createElement("li", { key: index }, t(factorKey)))
@@ -1905,36 +1921,36 @@ const ResultCard = ({ result }) => {
   );
 };
 
-const ResultsSection = ({ results, onStartOver }) => {
+const ResultsSection = ({ results: resultsProp, onStartOver }) => { // Renamed prop to avoid conflict
   const { t } = useContext(LanguageContext);
   const questionsItems = t('results.questionsItems', { returnObjects: true });
   const resourcesItems = t('results.resourcesItems', { returnObjects: true });
 
   return (
     React.createElement("div", { className: "py-12" },
-      React.createElement("h2", { className: "text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12" }, t('results.title')),
-      React.createElement("div", { className: "grid md:grid-cols-3 gap-8 items-stretch mb-16" }, // Increased bottom margin
-        results.map(res => (
+      React.createElement("h2", { className: "text-3xl font-bold text-gray-800 text-center mb-12" }, t('results.title')),
+      React.createElement("div", { className: "grid md:grid-cols-3 gap-8 items-stretch mb-12" },
+        resultsProp.map(res => ( 
           React.createElement(ResultCard, { key: res.id, result: res })
         ))
       ),
-      React.createElement(Card, { className: "p-6 md:p-8 transform transition-all duration-300 hover:shadow-2xl" }, // Removed scale on hover
-        React.createElement("h3", { className: "text-2xl font-semibold text-gray-800 mb-6 text-center" }, t('results.nextStepsTitle')),
-        React.createElement("p", { className: "text-gray-600 mb-8 text-center max-w-xl mx-auto" }, // Increased bottom margin
+      React.createElement(Card, { className: "p-6 md:p-8 transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]" },
+        React.createElement("h3", { className: "text-2xl font-semibold text-gray-700 mb-6 text-center" }, t('results.nextStepsTitle')),
+        React.createElement("p", { className: "text-gray-600 mb-6 text-center" },
             t('results.nextStepsIntro')
         ),
-        React.createElement("div", { className: "grid md:grid-cols-2 gap-x-8 gap-y-6" }, // Adjusted gap
+        React.createElement("div", { className: "grid md:grid-cols-2 gap-8" },
             React.createElement("div", null,
-                React.createElement("h4", { className: "text-lg font-semibold text-indigo-600 mb-3" }, t('results.questionsTitle')),
-                React.createElement("ul", { className: "list-disc list-inside space-y-1.5 text-gray-600 text-sm" }, // Adjusted spacing
+                React.createElement("h4", { className: "text-lg font-semibold text-blue-600 mb-3" }, t('results.questionsTitle')),
+                React.createElement("ul", { className: "list-disc list-inside space-y-1 text-gray-600 text-sm" },
                     Array.isArray(questionsItems) && questionsItems.map((item, index) => (
                          React.createElement("li", { key: index }, item)
                     ))
                 )
             ),
             React.createElement("div", null,
-                React.createElement("h4", { className: "text-lg font-semibold text-indigo-600 mb-3" }, t('results.resourcesTitle')),
-                React.createElement("ul", { className: "list-disc list-inside space-y-1.5 text-gray-600 text-sm" }, // Adjusted spacing
+                React.createElement("h4", { className: "text-lg font-semibold text-blue-600 mb-3" }, t('results.resourcesTitle')),
+                React.createElement("ul", { className: "list-disc list-inside space-y-1 text-gray-600 text-sm" },
                     Array.isArray(resourcesItems) && resourcesItems.map((item, index) => (
                          React.createElement("li", { key: index }, item)
                     ))
@@ -1956,18 +1972,25 @@ const ResultsSection = ({ results, onStartOver }) => {
 const App = () => {
   const { t } = useContext(LanguageContext);
   const [currentSection, setCurrentSection] = useState(Section.BASICS);
-
-  const initialPreferences = useMemo(() => PREFERENCE_FACTORS.reduce((acc, factor) => {
-    acc[factor.id] = factor.defaultValue;
-    return acc;
-  }, {}), []);
+  
+  const initialPreferences = useMemo(() => {
+    const prefs = {};
+    PREFERENCE_FACTORS.forEach(factor => {
+      if (factor.type === 'slider') {
+        prefs[factor.id] = factor.defaultValue;
+      } else if (factor.type === 'toggle') {
+        prefs[factor.id] = factor.defaultValue;
+      }
+    });
+    return prefs;
+  }, []);
 
   const [preferences, setPreferences] = useState(initialPreferences);
   const [animationKey, setAnimationKey] = useState(0);
 
   const navigateTo = useCallback((section) => {
     setCurrentSection(section);
-    setAnimationKey(prevKey => prevKey + 1);
+    setAnimationKey(prevKey => prevKey + 1); 
     window.scrollTo(0, 0);
   }, []);
 
@@ -2006,18 +2029,18 @@ const App = () => {
     treatmentScores.peritonealDialysis += preferences.selfCareAbility * 0.2;
     treatmentScores.hemodialysis += (100 - preferences.selfCareAbility) * 0.05;
     treatmentScores.conservativeCare += preferences.selfCareAbility * 0.1;
-
-    treatmentScores.peritonealDialysis += (preferences.physicalCondition - 50) * 0.05;
+    
+    treatmentScores.peritonealDialysis += (preferences.physicalCondition - 50) * 0.05; 
     treatmentScores.hemodialysis += (preferences.physicalCondition - 50) * 0.03;
     if (preferences.physicalCondition < 30) treatmentScores.conservativeCare += 15;
     else if (preferences.physicalCondition > 70) treatmentScores.conservativeCare -=5;
 
-    const HERNIA_PENALTY_PD = 60;
-    const HERNIA_BONUS_HD = 30;
-    const VASCULAR_PENALTY_HD = 60;
-    const VASCULAR_BONUS_PD = 30;
-    const CONFLICT_PENALTY_HD_PD = 80;
-    const CONFLICT_BONUS_CC = 50;
+    const HERNIA_PENALTY_PD = 60; 
+    const HERNIA_BONUS_HD = 30;   
+    const VASCULAR_PENALTY_HD = 60; 
+    const VASCULAR_BONUS_PD = 30;   
+    const CONFLICT_PENALTY_HD_PD = 80; 
+    const CONFLICT_BONUS_CC = 50;     
 
     if (preferences.hasHerniaOrSurgery && preferences.hasVascularAccessIssues) {
         treatmentScores.hemodialysis -= CONFLICT_PENALTY_HD_PD;
@@ -2027,15 +2050,15 @@ const App = () => {
         if (preferences.hasHerniaOrSurgery) {
             treatmentScores.peritonealDialysis -= HERNIA_PENALTY_PD;
             treatmentScores.hemodialysis += HERNIA_BONUS_HD;
-            treatmentScores.conservativeCare += 10;
+            treatmentScores.conservativeCare += 10; 
         }
         if (preferences.hasVascularAccessIssues) {
             treatmentScores.hemodialysis -= VASCULAR_PENALTY_HD;
             treatmentScores.peritonealDialysis += VASCULAR_BONUS_PD;
-            treatmentScores.conservativeCare += 10;
+            treatmentScores.conservativeCare += 10; 
         }
     }
-
+    
     const allScores = Object.values(treatmentScores);
     let minScore = Math.min(...allScores);
     const maxScore = Math.max(...allScores);
@@ -2046,32 +2069,32 @@ const App = () => {
         treatmentScores.hemodialysis += baselineAdjustment;
         treatmentScores.peritonealDialysis += baselineAdjustment;
         treatmentScores.conservativeCare += baselineAdjustment;
-        minScore += baselineAdjustment;
+        minScore += baselineAdjustment; 
     }
-
-    let range = (maxScore + baselineAdjustment) - minScore;
-    if (range === 0) range = 1;
+    
+    let range = (maxScore + baselineAdjustment) - minScore; 
+    if (range === 0) range = 1; 
 
     const results = TREATMENT_OPTIONS_DATA.map(treatment => {
         let normalizedScore = treatmentScores[treatment.id] || 0;
-        let percentage = ((normalizedScore - minScore) / range) * 80 + 10;
-        percentage = Math.max(20, Math.min(95, Math.round(percentage)));
-
+        let percentage = ((normalizedScore - minScore) / range) * 80 + 10; 
+        percentage = Math.max(20, Math.min(95, Math.round(percentage))); 
+        
         const baseKeyFactors = treatment.id === 'hemodialysis' ? [
-            'understandingTreatments.hemodialysis.pros.0',
-            'understandingTreatments.hemodialysis.cons.0',
-            'understandingTreatments.hemodialysis.pros.1',
-            'understandingTreatments.hemodialysis.cons.3',
+            'understandingTreatments.hemodialysis.pros.0', 
+            'understandingTreatments.hemodialysis.cons.0', 
+            'understandingTreatments.hemodialysis.pros.1', 
+            'understandingTreatments.hemodialysis.cons.3', 
         ] : treatment.id === 'peritonealDialysis' ? [
-            'understandingTreatments.peritonealDialysis.pros.0',
-            'understandingTreatments.peritonealDialysis.pros.1',
-            'understandingTreatments.peritonealDialysis.cons.0',
-            'understandingTreatments.peritonealDialysis.cons.5',
-        ] : [
-            'understandingTreatments.conservativeCare.cons.1',
-            'understandingTreatments.conservativeCare.cons.0',
-            'understandingTreatments.conservativeCare.cons.2',
-            'understandingTreatments.conservativeCare.cons.3',
+            'understandingTreatments.peritonealDialysis.pros.0', 
+            'understandingTreatments.peritonealDialysis.pros.1', 
+            'understandingTreatments.peritonealDialysis.cons.0', 
+            'understandingTreatments.peritonealDialysis.cons.5', 
+        ] : [ 
+            'understandingTreatments.conservativeCare.cons.1', 
+            'understandingTreatments.conservativeCare.cons.0', 
+            'understandingTreatments.conservativeCare.cons.2', 
+            'understandingTreatments.conservativeCare.cons.3', 
         ];
 
         const dynamicKeyFactors = [];
@@ -2083,7 +2106,7 @@ const App = () => {
                 dynamicKeyFactors.push('results.hdKeyFactorVascular');
             }
         } else if (treatment.id === 'peritonealDialysis') {
-             if (preferences.hasVascularAccessIssues && !preferences.hasHerniaOrSurgery) {
+            if (preferences.hasVascularAccessIssues && !preferences.hasHerniaOrSurgery) {
                 dynamicKeyFactors.push('results.pdKeyFactorVascular');
             }
             if (preferences.hasHerniaOrSurgery) {
@@ -2106,10 +2129,10 @@ const App = () => {
         };
     });
     return results.sort((a,b) => b.matchPercentage - a.matchPercentage);
-  }, [preferences]);
+  }, [preferences, TREATMENT_OPTIONS_DATA]); // Added TREATMENT_OPTIONS_DATA to dependency array
 
   const results = useMemo(() => calculateResults(), [calculateResults]);
-
+  
   const renderSection = () => {
     switch (currentSection) {
       case Section.BASICS:
@@ -2132,7 +2155,7 @@ const App = () => {
   };
 
   return (
-    React.createElement("div", { className: "min-h-screen" }, // Removed bg color, handled by body style
+    React.createElement("div", { className: "min-h-screen bg-slate-100 text-gray-800" },
       React.createElement(Navbar, { currentSection: currentSection, onNavigate: navigateTo }),
       React.createElement("main", { className: "pt-20 pb-12 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto" },
         React.createElement("div", { key: animationKey, className: "section-content" },
@@ -2148,7 +2171,6 @@ const App = () => {
 };
 // --- END OF App.tsx ---
 
-// --- ReactDOM Render (from index.tsx) ---
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error("Could not find root element to mount to");
@@ -2162,7 +2184,7 @@ root.render(
     )
   )
 );
-
     </script>
 </body>
 </html>
+```
